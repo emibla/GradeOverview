@@ -144,8 +144,8 @@ public class Controller {
 		courseTable.getColumns().add(yearCol);
 		
 
-        courseTable.getItems().add(new Course("TDT4246", "Høst", "2020", "B"));
-
+        //courseTable.getItems().add(new Course("TDT4246", "Høst", "2020", "B"));
+        courseTable.getItems().addAll(testCourse.getCourses());
 		
 		}catch(NullPointerException n) {
 			System.out.println(n.getMessage());
@@ -179,6 +179,8 @@ public class Controller {
         courseTable.getItems().add(course);
 
 }
+    
+
     /*
     public void getCourses() {
     	ObservableList<String> listItems = FXCollections.observableArrayList();
