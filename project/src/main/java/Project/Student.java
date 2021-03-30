@@ -1,6 +1,11 @@
 package Project;
 
+/* 
+ * KLasse som oppretter en student og sier hvilke attributter studenten skal ha
+ */
+
 public class Student {
+	
 	private String firstName;
 	private String lastName;
 	private int studentID;
