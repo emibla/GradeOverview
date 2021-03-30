@@ -1,5 +1,6 @@
 package Project;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,7 +38,7 @@ public class Controller {
 	
 	@FXML
 	public TextField firstname;
-	@FXML
+	@FXML	
 	public TextField lastName;
 	@FXML
 	public TextField studentID;
@@ -76,7 +77,7 @@ public class Controller {
 	@FXML
 	public ToggleButton semesterSpring;
 	@FXML
-	public TextField year;
+	public TextField courseYear;
 	@FXML
 	public Button registerCourseButton;
 	
@@ -95,15 +96,16 @@ public class Controller {
 	
 	
 	@FXML
-	public TableColumn<String, String> courseID;
+	public TableColumn<Course, String> courseID;
+	
 	@FXML	
-	public TableColumn<String, String> grade;
+	public TableColumn<Course, String> grade;
 	@FXML
-	public TableColumn<String, String> semester;
+	public TableColumn<Course, String> semester;
 	@FXML
-	public TableColumn<String, String> year1;
+	public TableColumn<Course, String> year;
 	
-	
+	@FXML
     private ObservableList<Course> list;
 	
 	@FXML
@@ -112,41 +114,43 @@ public class Controller {
 		StudentRegister testStudents = new StudentRegister();
 		StudentRegister testCourse = new StudentRegister();
 		
-		testStudents.registerNewStudent("Emily", "Test", 1234);
-		testStudents.registerNewStudent("Mari", "Test", 2345);
-		testStudents.registerNewStudent("Kine", "Test", 3456);
-		testCourse.registerNewCourse("TDT4100", "Høst", 2019, "A");
-		testCourse.registerNewCourse("TMA4100", "Vår", 2020, "C");
-		testCourse.registerNewCourse("TDT4245", "Høst", 2020, "B");
+		testStudents.registerNewStudent("Emily", "Test", "1234");
+		testStudents.registerNewStudent("Mari", "Test", "2345");
+		testStudents.registerNewStudent("Kine", "Test", "3456");
+		testCourse.registerNewCourse("TDT4100", "Høst", "2019", "A");
+		testCourse.registerNewCourse("TMA4100", "Vår", "2020", "C");
+		testCourse.registerNewCourse("TDT4245", "Høst", "2020", "B");
 		testCourse.getCourses();
+		
 		
 		
 		try {
 		
+		//oppretter kolonner i tableView
 		TableColumn<Course, String> courseIDcol = new TableColumn<>("Emnekode");
 		courseIDcol.setCellValueFactory(new PropertyValueFactory<> ("courseID"));
 		courseTable.getColumns().add(courseIDcol);
 		
 		TableColumn<Course, String> gradeCol = new TableColumn<>("Karakter");
 		gradeCol.setCellValueFactory(new PropertyValueFactory<> ("grade"));
-		//courseTable.getColumns().add(gradeCol);
+		courseTable.getColumns().add(gradeCol);
 		
 		TableColumn<Course, String> semesterCol = new TableColumn<>("Semester");
 		semesterCol.setCellValueFactory(new PropertyValueFactory<> ("semester"));
-		//courseTable.getColumns().add(semesterCol);
+		courseTable.getColumns().add(semesterCol);
 		
 		TableColumn<Course, String> yearCol = new TableColumn<>("År");
 		yearCol.setCellValueFactory(new PropertyValueFactory<> ("year"));
-		//courseTable.getColumns().add(yearCol);
+		courseTable.getColumns().add(yearCol);
 		
-		list = courseTable.getItems();
-        list.add(new Course("TDT4246", "Høst", 2020, "D"));
+
+        courseTable.getItems().add(new Course("TDT4246", "Høst", "2020", "B"));
 
 		
 		}catch(NullPointerException n) {
 			System.out.println(n.getMessage());
 		}
-		
+		System.out.println(testStudents.toString());
 		searchStudentButton.setOnAction(actionEvent -> { changeLabel();
 		
 		
@@ -156,8 +160,6 @@ public class Controller {
 	public void changeLabel() {
 		errorSearchStudent.setText("Test");
 }
-	
-	
 	
 	//SøkButtonOnAction
 	@FXML
@@ -176,6 +178,17 @@ public class Controller {
     public void addNewCourse(Course course) {
         courseTable.getItems().add(course);
 
-}}
+}
+    /*
+    public void getCourses() {
+    	ObservableList<String> listItems = FXCollections.observableArrayList();
+    	for(int i=0; i< courses.size(); i++) {	
+    		Course element = courses.get(i);
+    	}
+    	Course.setItems(listItems);
+    	
+    }*/
+    
+}
 	
 

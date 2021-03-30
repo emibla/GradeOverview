@@ -10,11 +10,11 @@ public class Course {
 	
 	private String courseID; //Emnekode 
 	private String semester; // Høst eller Vår
-	private int year; //årstall
+	private String year; //årstall
 	private String grade; // A, B, C, D, E
 	
 
-	public Course(String courseID, String semester, int year, String grade) {
+	public Course(String courseID, String semester, String year, String grade) {
 		this.courseID = courseID;
 		this.semester = semester;
 		this.year = year;
@@ -29,7 +29,7 @@ public class Course {
 		return semester;
 	}
 	
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
 	
@@ -49,12 +49,12 @@ public class Course {
 		this.semester = semester;
 	}
 	
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 	
 	
-	
+	@Override
 	public String toString() {
 		return "CourseID: " + courseID + " semester: " + semester + " Year: " + year + " Grade: " + grade;
 	

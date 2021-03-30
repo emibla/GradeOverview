@@ -8,7 +8,7 @@ public class Student {
 	
 	private String firstName;
 	private String lastName;
-	private int studentID;
+	private String studentID;
 	
 	
 	/**
@@ -17,7 +17,7 @@ public class Student {
 	 * @param lastName
 	 * @param studentID
 	 */
-	public Student(String firstName, String lastName, int studentID) {
+	public Student(String firstName, String lastName, String studentID) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.studentID = studentID;
@@ -31,7 +31,7 @@ public class Student {
 		return lastName;
 	}
 	
-	public int getStudentID() {
+	public String getStudentID() {
 		return studentID;
 	}
 	

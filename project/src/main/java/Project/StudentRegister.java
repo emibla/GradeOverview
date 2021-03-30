@@ -28,7 +28,7 @@ public class StudentRegister {
 	 */
 	
 	//hvis sann, returner true (ny student), hvis ikke returnerer komplett eller finnes fra før
-	public Student registerNewStudent(String firstName, String lastName, int studentID) {
+	public Student registerNewStudent(String firstName, String lastName, String studentID) {
 		Student newStudent = new Student(firstName, lastName, studentID);
 		this.students.add(newStudent);
 		return newStudent;
@@ -38,7 +38,7 @@ public class StudentRegister {
 	 * Opprett nytt emne
 	 */
 	
-	public Course registerNewCourse(String courseID, String semester, int year, String grade) {
+	public Course registerNewCourse(String courseID, String semester, String year, String grade) {
 		Course newCourse = new Course(courseID, semester, year, grade);
 		this.courses.add(newCourse);
 		return newCourse;		
