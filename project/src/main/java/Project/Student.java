@@ -1,5 +1,7 @@
 package Project;
 
+import java.util.ArrayList;
+
 /* 
  * KLasse som oppretter en student og sier hvilke attributter studenten skal ha
  */
@@ -10,17 +12,22 @@ public class Student {
 	private String lastName;
 	private String studentID;
 	
+	//Arraylist med alle emner hver enkelt student har
+	//private ArrayList<Course> studentCourses;
+	
 	
 	/**
 	 * 
 	 * @param firstName
 	 * @param lastName
 	 * @param studentID
+	 * @param studentCourses 
 	 */
-	public Student(String firstName, String lastName, String studentID) {
+	public Student(String firstName, String lastName, String studentID) { //ArrayList<Course> studentCourses
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.studentID = studentID;
+		//this.studentCourses = studentCourses;
 	}
 	
 	public String getFirstName() {
@@ -37,7 +44,7 @@ public class Student {
 	
 	@Override
 	public String toString() {
-		return "\n" + firstName + " " + lastName + " " + studentID;
+		return firstName + " " + lastName + " " + studentID;
 	}
 	
 	
