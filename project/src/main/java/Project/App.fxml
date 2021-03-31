@@ -15,8 +15,8 @@
          <children>
             <TextField fx:id="searchStudentID" layoutX="20.0" layoutY="213.0" promptText="Studentnummer" />
             <Button fx:id="searchStudentButton" layoutX="185.0" layoutY="213.0" mnemonicParsing="false" text="Søk" />
-            <TextField fx:id="firstName" layoutX="20.0" layoutY="56.0" prefHeight="27.0" prefWidth="107.0" promptText="Fornavn" />
-            <TextField fx:id="lastName" layoutX="124.0" layoutY="56.0" prefHeight="27.0" prefWidth="122.0" promptText="Etternavn" />
+            <TextField fx:id="firstName" layoutX="20.0" layoutY="56.0" prefHeight="27.0" prefWidth="100.0" promptText="Fornavn" />
+            <TextField fx:id="lastName" layoutX="124.0" layoutY="56.0" prefHeight="27.0" prefWidth="100.0" promptText="Etternavn" />
             <TextField fx:id="registerStudentID" layoutX="20.0" layoutY="90.0" prefHeight="27.0" prefWidth="154.0" promptText="Studentnummer" />
             <Button fx:id="registerStudentButton" layoutX="175.0" layoutY="90.0" mnemonicParsing="false" text="Registrer!" />
             <Label layoutX="20.0" layoutY="31.0" text="Registrer deg her:" />
@@ -57,12 +57,16 @@
    <center>
       <AnchorPane accessibleText="Karakter" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #B2BEB5#B2BEB5;" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="42.0" layoutY="43.0" text="Her kommer studentnavn når innlogget">
+            <Label fx:id="loggedInStudentName" layoutX="42.0" layoutY="43.0" text="Her kommer studentnavn når innlogget">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TableView fx:id="courseTable" layoutX="42.0" layoutY="111.0" prefHeight="100.0" prefWidth="301.0" />
+            <TableView fx:id="courseTable" layoutX="42.0" layoutY="111.0" prefHeight="100.0" prefWidth="301.0">
+            <placeholder>
+            <Label text="Logg inn med din studentID eller registrer deg" />
+            </placeholder>
+            </TableView>
          </children>
       </AnchorPane>
    </center>
