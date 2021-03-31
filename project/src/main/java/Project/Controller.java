@@ -14,52 +14,24 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class Controller {
-	
-	/**
-	 * 
-	 * @param args
-	 
 
-	private static void main(String[] args) { 
-		//adding some test data
-		StudentRegister testStudents = new StudentRegister();
-		StudentRegister testCourse = new StudentRegister();
-		testStudents.registerNewStudent("Emily", "Test", 1234);
-		testStudents.registerNewStudent("Mari", "Test", 2345);
-		testStudents.registerNewStudent("Kine", "Test", 3456);
-		testCourse.registerNewCourse("TDT4100", "Høst", 2019, "A");
-		testCourse.registerNewCourse("TMA4100", "Vår", 2020, "C");
-		testCourse.registerNewCourse("TDT4245", "Høst", 2020, "B");
-	}
-	*/
-	/*
-	 * Register new Student
-	 */
-	
+	// Register new Student
 	@FXML
 	public TextField firstname;
-	@FXML	
+	@FXML
 	public TextField lastName;
 	@FXML
 	public TextField studentID;
 	@FXML
 	public Button registerStudentButton;
-	
-	
-	/*
-	 * Hent inn Student
-	 */
-	
+
+	// Hent inn Student
 	@FXML
 	public TextField searchStudentID;
 	@FXML
 	public Button searchStudentButton;
-	
-	
-	/*
-	 * Legg til karakterer
-	 */
-	
+
+	// Legg til karakterer
 	@FXML
 	public TextField registerCourseID;
 	@FXML
@@ -80,8 +52,8 @@ public class Controller {
 	public TextField courseYear;
 	@FXML
 	public Button registerCourseButton;
-	
-	
+
+	// ErrorLabels
 	@FXML
 	public Label errorRegisterStudent;
 	@FXML
@@ -89,108 +61,94 @@ public class Controller {
 	@FXML
 	public Label errorRegisterCourse;
 
-	
-	
+	// TableView
 	@FXML
 	public TableView<Course> courseTable;
-	
-	
 	@FXML
 	public TableColumn<Course, String> courseID;
-	
-	@FXML	
+	@FXML
 	public TableColumn<Course, String> grade;
 	@FXML
 	public TableColumn<Course, String> semester;
 	@FXML
 	public TableColumn<Course, String> year;
-	
-	@FXML
-    private ObservableList<Course> list;
-	
+
+	/*
+	 * @FXML private ObservableList<Course> list;
+	 */
+
 	@FXML
 	private void initialize() {
-		
+
 		StudentRegister testStudents = new StudentRegister();
 		StudentRegister testCourse = new StudentRegister();
-		
+
 		testStudents.registerNewStudent("Emily", "Test", "1234");
 		testStudents.registerNewStudent("Mari", "Test", "2345");
 		testStudents.registerNewStudent("Kine", "Test", "3456");
 		testCourse.registerNewCourse("TDT4100", "Høst", "2019", "A");
 		testCourse.registerNewCourse("TMA4100", "Vår", "2020", "C");
 		testCourse.registerNewCourse("TDT4245", "Høst", "2020", "B");
-		testCourse.getCourses();
-		
-		
-		
-		try {
-		
-		//oppretter kolonner i tableView
-		TableColumn<Course, String> courseIDcol = new TableColumn<>("Emnekode");
-		courseIDcol.setCellValueFactory(new PropertyValueFactory<> ("courseID"));
-		courseTable.getColumns().add(courseIDcol);
-		
-		TableColumn<Course, String> gradeCol = new TableColumn<>("Karakter");
-		gradeCol.setCellValueFactory(new PropertyValueFactory<> ("grade"));
-		courseTable.getColumns().add(gradeCol);
-		
-		TableColumn<Course, String> semesterCol = new TableColumn<>("Semester");
-		semesterCol.setCellValueFactory(new PropertyValueFactory<> ("semester"));
-		courseTable.getColumns().add(semesterCol);
-		
-		TableColumn<Course, String> yearCol = new TableColumn<>("År");
-		yearCol.setCellValueFactory(new PropertyValueFactory<> ("year"));
-		courseTable.getColumns().add(yearCol);
-		
 
-        //courseTable.getItems().add(new Course("TDT4246", "Høst", "2020", "B"));
-        courseTable.getItems().addAll(testCourse.getCourses());
-		
-		}catch(NullPointerException n) {
+		try {
+
+			// oppretter kolonner i tableView
+			TableColumn<Course, String> courseIDcol = new TableColumn<>("Emnekode");
+			courseIDcol.setCellValueFactory(new PropertyValueFactory<>("courseID"));
+			courseTable.getColumns().add(courseIDcol);
+
+			TableColumn<Course, String> gradeCol = new TableColumn<>("Karakter");
+			gradeCol.setCellValueFactory(new PropertyValueFactory<>("grade"));
+			courseTable.getColumns().add(gradeCol);
+
+			TableColumn<Course, String> semesterCol = new TableColumn<>("Semester");
+			semesterCol.setCellValueFactory(new PropertyValueFactory<>("semester"));
+			courseTable.getColumns().add(semesterCol);
+
+			TableColumn<Course, String> yearCol = new TableColumn<>("År");
+			yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
+			courseTable.getColumns().add(yearCol);
+
+			//Henter ut data fra course ArrayList
+			// courseTable.getItems().add(new Course("TDT4246", "Høst", "2020", "B"));
+			courseTable.getItems().addAll(testCourse.getCourses());
+
+		} catch (NullPointerException n) {
 			System.out.println(n.getMessage());
 		}
 		System.out.println(testStudents.toString());
-		searchStudentButton.setOnAction(actionEvent -> { changeLabel();
-		
-		
+		searchStudentButton.setOnAction(actionEvent -> {
+			changeLabel();
+
 		});
-		
+
 	}
+
 	public void changeLabel() {
 		errorSearchStudent.setText("Test");
-}
-	
-	//SøkButtonOnAction
+	}
+
+	// SøkButtonOnAction
 	@FXML
 	public void searchStudent_button_on_action() {
 		try {
-			//Hente ut verdien tastet inn i textfield og finne studenten med samme studentID i arrayList Student
+			// Hente ut verdien tastet inn i textfield og finne studenten med samme
+			// studentID i arrayList Student
 			int studentID = Integer.parseInt(searchStudentID.getText());
 			System.out.println(studentID);
 
+		} catch (Exception e) {
+			errorSearchStudent.setText("Finner ikke student, er du sikker på at du har tastet rett StudentID?");
 		}
-		catch(Exception e){
-			errorSearchStudent.setText("Finner ikke student, er du sikker på at du har tastet rett StudentID?");}
-		   
+
 	}
-	
-    public void addNewCourse(Course course) {
-        courseTable.getItems().add(course);
 
 }
-    
 
-    /*
-    public void getCourses() {
-    	ObservableList<String> listItems = FXCollections.observableArrayList();
-    	for(int i=0; i< courses.size(); i++) {	
-    		Course element = courses.get(i);
-    	}
-    	Course.setItems(listItems);
-    	
-    }*/
-    
-}
-	
-
+/*
+ * public void getCourses() { ObservableList<String> listItems =
+ * FXCollections.observableArrayList(); for(int i=0; i< courses.size(); i++) {
+ * Course element = courses.get(i); } Course.setItems(listItems);
+ * 
+ * }
+ */

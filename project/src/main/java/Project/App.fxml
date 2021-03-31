@@ -20,7 +20,7 @@
             <TextField fx:id="registerStudentID" layoutX="20.0" layoutY="90.0" prefHeight="27.0" prefWidth="154.0" promptText="Studentnummer" />
             <Button fx:id="registerStudentButton" layoutX="175.0" layoutY="90.0" mnemonicParsing="false" text="Registrer!" />
             <Label layoutX="20.0" layoutY="31.0" text="Registrer deg her:" />
-            <Label layoutX="20.0" layoutY="188.0" text="Hent inn dine karakterer:" />
+            <Label layoutX="20.0" layoutY="188.0" text="Hent inn din side:" />
             <Label layoutX="20.0" layoutY="277.0" text="Legg til karakterer:" />
             <TextField fx:id="registerCourseID" layoutX="20.0" layoutY="296.0" prefHeight="27.0" prefWidth="156.0" promptText="Navn på emne" />
             <Button fx:id="registerCourseButton" layoutX="118.0" layoutY="425.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="58.0" text="Legg til" />
