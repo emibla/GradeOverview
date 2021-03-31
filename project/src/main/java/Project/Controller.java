@@ -284,7 +284,6 @@ public class Controller {
 		return registerCourseID.getText().isEmpty()  || courseYear.getText().isEmpty() || (!semesterAutumn.isSelected() && !semesterSpring.isSelected()) ||
 				(!gradeA.isSelected() && !gradeB.isSelected() && !gradeC.isSelected() && !gradeD.isSelected() &&  !gradeE.isSelected());
 	}
-
 }
 
 /*
