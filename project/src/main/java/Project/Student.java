@@ -27,13 +27,16 @@ public class Student {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.studentID = studentID;
+		//Lager en ArrayList studentCourses
 		this.studentCourses = new ArrayList<Course>();	
 	}
 	
+	//Legger til Course i studentCourses under Student
 	public void addCourse(Course course) {
 		this.studentCourses.add(course);
 	}
 	
+	//henter ut course fra ArrayListen studentCourses
 	public ArrayList<Course> getCourses(){
 		return this.studentCourses;
 	}
