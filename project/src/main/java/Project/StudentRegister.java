@@ -45,6 +45,31 @@ public class StudentRegister {
 	}
 	
 	
-
+	public ArrayList<Student> findStudentByID(String studentID) {
+		ArrayList<Student> studentIDsearch = new ArrayList();
+	
+		for(int i = 0; i < students.size(); i++) {
+			if(getStudents().get(i).equals(studentID)) {
+				studentIDsearch.add(getStudents().get(i));
+			}
+		}
+		return studentIDsearch;
+	}
+	
+	/*
+	 * Didn't work
+	public void fetchStudent(Student student) {
+		if (student == null) {
+			throw new IllegalArgumentException("Tast inn studentID");
+		}
+		
+		Student s = students.get(student.getStudentID());
+		
+//Student s = students.get(student.getStudentID());
+		
+	}
+	
+	
+*/
 
 }

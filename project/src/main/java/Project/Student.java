@@ -37,7 +37,7 @@ public class Student {
 	
 	@Override
 	public String toString() {
-		return firstName + " " + lastName + " " + studentID;
+		return "\n" + firstName + " " + lastName + " " + studentID;
 	}
 	
 	
