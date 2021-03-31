@@ -13,7 +13,7 @@ public class Student {
 	private String studentID;
 	
 	//Arraylist med alle emner hver enkelt student har
-	//private ArrayList<Course> studentCourses;
+	private ArrayList<Course> studentCourses;
 	
 	
 	/**
@@ -23,11 +23,19 @@ public class Student {
 	 * @param studentID
 	 * @param studentCourses 
 	 */
-	public Student(String firstName, String lastName, String studentID) { //ArrayList<Course> studentCourses
+	public Student(String firstName, String lastName, String studentID) { // ArrayList<Course> studentCourses
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.studentID = studentID;
-		//this.studentCourses = studentCourses;
+		this.studentCourses = new ArrayList<Course>();	
+	}
+	
+	public void addCourse(Course course) {
+		this.studentCourses.add(course);
+	}
+	
+	public ArrayList<Course> getCourses(){
+		return this.studentCourses;
 	}
 	
 	public String getFirstName() {
