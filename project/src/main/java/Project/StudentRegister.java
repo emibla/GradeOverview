@@ -1,6 +1,7 @@
 package Project;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentRegister {
 	
@@ -24,9 +25,25 @@ public class StudentRegister {
 	}
 	
 	/*
-	 * Opprett ny student
-	 */
+	public List<Course> getCoursesByStudentID(String studentID){
+		return courses.stream()
+				.filter(p -> p.getStudentID().equals(studentID))
+				.collect(Collectors.toList());
+	}
+	*/
 	
+	public void addCourseToStudent(String studentID, Course course) {
+		 ArrayList<Course> studentCourses;
+		for(int i = 0; i < students.size(); i++) {
+			if(getStudents().get(i).getStudentID().equals(studentID)) {
+				//this.students.registerNewCourse(course);
+			}
+		}
+	}
+	
+	
+	
+	//Opprett ny student
 	//hvis sann, returner true (ny student), hvis ikke returnerer komplett eller finnes fra før
 	public Student registerNewStudent(String firstName, String lastName, String studentID) {
 		Student newStudent = new Student(firstName, lastName, studentID);
@@ -37,7 +54,6 @@ public class StudentRegister {
 	/*
 	 * Opprett nytt emne
 	 */
-	
 	public Course registerNewCourse(String courseID, String semester, String year, String grade) {
 		Course newCourse = new Course(courseID, semester, year, grade);	
 		this.courses.add(newCourse);
@@ -45,15 +61,15 @@ public class StudentRegister {
 	}
 	
 	
-	public ArrayList<Student> findStudentByID(String studentID) {
-		ArrayList<Student> studentIDsearch = new ArrayList();
-	
+	public Student findStudentByID(String studentID) {
+		//ArrayList<Student> studentIDsearch = new ArrayList();
+		Student stud;
 		for(int i = 0; i < students.size(); i++) {
 			if(getStudents().get(i).getStudentID().equals(studentID)) {
-				studentIDsearch.add(getStudents().get(i));
+				return getStudents().get(i);
 			}
 		}
-		return studentIDsearch;
+		return null;
 	}
 	
 	/*

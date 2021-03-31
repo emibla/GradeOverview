@@ -92,21 +92,21 @@ public class Controller {
 	 * @FXML private ObservableList<Course> list;
 	 */
 
-
-	StudentRegister testStudents = new StudentRegister();
-	StudentRegister testCourse = new StudentRegister();
+	StudentRegister studentRegister = new StudentRegister();
+	//tudentRegister testStudents = new StudentRegister();
+	//StudentRegister testCourse = new StudentRegister();
 
 
 	public void fillWithTestData() {
-	testStudents.registerNewStudent("Emily", "Test", "1234");
-	testStudents.registerNewStudent("Mari", "Test", "2345");
-	testStudents.registerNewStudent("Kine", "Test", "3456");
-	testCourse.registerNewCourse("TDT4100", "Høst", "2019", "A");
-	testCourse.registerNewCourse("TMA4100", "Vår", "2020", "C");
-	testCourse.registerNewCourse("TDT4245", "Høst", "2020", "B");
+	studentRegister.registerNewStudent("Emily", "Test", "1234");
+	studentRegister.registerNewStudent("Mari", "Test", "2345");
+	studentRegister.registerNewStudent("Kine", "Test", "3456");
+	//studentRegister.registerNewCourse("TDT4100", "Høst", "2019", "A");
+	//studentRegister.registerNewCourse("TMA4100", "Vår", "2020", "C");
+	//studentRegister.registerNewCourse("TDT4245", "Høst", "2020", "B");
 	
 	//Henter ut data fra course ArrayList
-	courseTable.getItems().addAll(testCourse.getCourses());
+	courseTable.getItems().addAll(studentRegister.getCourses());
 	}
 	
 	@FXML
@@ -132,7 +132,7 @@ public class Controller {
 			yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
 			courseTable.getColumns().add(yearCol);
 			
-			List<Student> students = testStudents.getStudents();
+			List<Student> students = studentRegister.getStudents();
 			System.out.println(students);
 			
 			//Når vi fjerner denne, vil det ikke vises testdata lenger
@@ -144,7 +144,7 @@ public class Controller {
 		}
 		
 		//Test. Printer ut studentene i konsollen
-		System.out.println(testStudents.toString());
+		System.out.println(studentRegister.toString());
 			
 		//knapp for å registrere student
 		registerStudentButton.setOnAction(actionEvent -> {
@@ -179,13 +179,19 @@ public class Controller {
 			return;
 		}
 		//registrerer det nye courset og legger det i testList
-		studReg.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
+		//studReg.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
+		studentRegister.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
 		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt
 		System.out.println(studReg.getStudents());
 	}
 	
 	//Søker etter student i students- arraylist
 	public void searchStudent() {
+		courseTable.getItems().clear();
+		String studentID = searchStudentID.getText();
+		Student stud = studentRegister.findStudentByID(studentID);
+		//Oppdaterer tabellen og getter alle course som ligger i studentRegister på nytt
+		courseTable.getItems().addAll(stud.getCourses());
 		if(ifSearchFieldEmpty()) {
 			errorSearchStudent.setText("Tast inn studentID");
 			return;
@@ -196,9 +202,10 @@ public class Controller {
 	@FXML
 	public void loggedInStudentName() {
 		String ID = searchStudentID.getText();
-		ArrayList<Student> stud = testStudents.findStudentByID(ID);
+		//Student stud = studentRegister.findStudentByID(studentID);
+		Student stud = studentRegister.findStudentByID(ID);
 		try {
-		loggedInStudentName.setText("Velkommen "+ stud.get(0).getFirstName()+ " " + stud.get(0).getLastName());
+		loggedInStudentName.setText("Velkommen "+ stud.getFirstName()+ " " + stud.getLastName());
 		}catch(Exception e) {
 			loggedInStudentName.setText("Not found");
 		}
@@ -243,12 +250,16 @@ public class Controller {
 		else if (gradeTogger == gradeE) {
 			grad = "E";
 		}
+		
+		String studentID = searchStudentID.getText();
+		Student stud = studentRegister.findStudentByID(studentID);
+		Course cour = new Course(registerCourseID.getText(), sem, courseYear.getText(), grad);
 	
 		//registrerer det nye courset og legger det i testList
-		testList.registerNewCourse(registerCourseID.getText(), sem, courseYear.getText(), grad);
+		stud.addCourse(cour);
 		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt
-		courseTable.getItems().addAll(testList.getCourses());
-		updateTables();
+		courseTable.getItems().clear();
+		courseTable.getItems().addAll(stud.getCourses());
 	}
 	
 

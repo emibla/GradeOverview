@@ -24,8 +24,4 @@ public class App extends Application {
 	public static void main(final String[]args) {
 		launch();
 	}
-
-
-
-
 }
