@@ -39,7 +39,7 @@ public class StudentRegister {
 	 */
 	
 	public Course registerNewCourse(String courseID, String semester, String year, String grade) {
-		Course newCourse = new Course(courseID, semester, year, grade);
+		Course newCourse = new Course(courseID, semester, year, grade);	
 		this.courses.add(newCourse);
 		return newCourse;		
 	}
@@ -49,7 +49,7 @@ public class StudentRegister {
 		ArrayList<Student> studentIDsearch = new ArrayList();
 	
 		for(int i = 0; i < students.size(); i++) {
-			if(getStudents().get(i).equals(studentID)) {
+			if(getStudents().get(i).getStudentID().equals(studentID)) {
 				studentIDsearch.add(getStudents().get(i));
 			}
 		}
