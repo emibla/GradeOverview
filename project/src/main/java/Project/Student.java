@@ -23,7 +23,7 @@ public class Student {
 	 * @param studentID
 	 * @param studentCourses 
 	 */
-	public Student(String firstName, String lastName, String studentID) { // ArrayList<Course> studentCourses
+	public Student(String firstName, String lastName, String studentID) { 
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.studentID = studentID;

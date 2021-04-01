@@ -20,8 +20,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+
+/**
+ * 
+ * @author eblakseth
+ * Controllerclass for App GradeOverview
+ * 
+ */
 public class Controller {
 
+	/**
+	 * Connecting FXML components to Controller class
+	 */
+	
 	// Register new Student
 	@FXML
 	public TextField firstName;
@@ -92,11 +103,17 @@ public class Controller {
 	 * @FXML private ObservableList<Course> list;
 	 */
 
+	/**
+	 * initializing a new StudentRegister
+	 */
 	StudentRegister studentRegister = new StudentRegister();
 	//tudentRegister testStudents = new StudentRegister();
 	//StudentRegister testCourse = new StudentRegister();
 
 
+	/**
+	 * Method to fill register with testdata
+	 */
 	public void fillWithTestData() {
 	studentRegister.registerNewStudent("Emily", "Test", "1234");
 	studentRegister.registerNewStudent("Mari", "Test", "2345");
@@ -109,9 +126,11 @@ public class Controller {
 	courseTable.getItems().addAll(studentRegister.getCourses());
 	}
 	
+	
 	@FXML
 	private void initialize() {
-		fillWithTestData();
+		
+		fillWithTestData(); //Fill register with testdata
 		
 		try {
 
@@ -169,10 +188,11 @@ public class Controller {
 		errorSearchStudent.setText(searchStudentID.getText());
 	}
 	
+	
 	public void addStudent() {
-		StudentRegister studReg;
+		//StudentRegister studReg;
 		//lager et nytt objekt av typen StudentRegister
-		studReg = new StudentRegister();
+		//studReg = new StudentRegister();
 		errorRegisterStudent.setText(""); //setText og ikke = fordi det er en label og ikke en String 
 		if(ifAnyFieldRegisterStudentEmpty()) {
 			errorRegisterStudent.setText("Fyll alle felter");
@@ -182,21 +202,27 @@ public class Controller {
 		//studReg.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
 		studentRegister.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
 		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt
-		System.out.println(studReg.getStudents());
+		//System.out.println(studReg.getStudents());
 	}
 	
 	//Søker etter student i students- arraylist
 	public void searchStudent() {
-		courseTable.getItems().clear();
-		String studentID = searchStudentID.getText();
-		Student stud = studentRegister.findStudentByID(studentID);
-		//Oppdaterer tabellen og getter alle course som ligger i studentRegister på nytt
-		courseTable.getItems().addAll(stud.getCourses());
 		if(ifSearchFieldEmpty()) {
 			errorSearchStudent.setText("Tast inn studentID");
 			return;
 		}
+		courseTable.getItems().clear();
+		String studentID = searchStudentID.getText();
+		Student stud = studentRegister.findStudentByID(studentID);
+		if(stud  == null) {
+			errorSearchStudent.setText("Ikke funnet");
+		}else {
+		//Oppdaterer tabellen og getter alle course som ligger i studentRegister på nytt
+		courseTable.getItems().addAll(stud.getCourses());
+		}
 	}
+	
+
 	
 	// Printer navnet til studenten når den er logget inn
 	@FXML
@@ -207,15 +233,15 @@ public class Controller {
 		try {
 		loggedInStudentName.setText("Velkommen "+ stud.getFirstName()+ " " + stud.getLastName());
 		}catch(Exception e) {
-			loggedInStudentName.setText("Not found");
+			loggedInStudentName.setText("Finner ikke student");
 		}
 	}
 	
 	//Metode for å hente ut informasjon fra registrering av course
 	public void addCourse() {
-		StudentRegister testList;
+		//StudentRegister testList;
 		// lager en ny liste av klassen StudentRegister
-		testList = new StudentRegister();
+		//testList = new StudentRegister();
 		errorRegisterCourse.setText("");
 		//hvis ifAnyFieldEmpty returnerer True, kastes en feilmelding i label og returnerer
 		if(ifAnyFieldEmpty())
@@ -270,7 +296,7 @@ public class Controller {
 	
 	//Returnerer True hvis firstName, lastName eller studentID ikke er fylt ut
 	private boolean ifAnyFieldRegisterStudentEmpty() {
-		return firstName.getText().isEmpty()  || lastName.getText().isEmpty() || studentID.getText().isEmpty();
+		return firstName.getText().isEmpty() || lastName.getText().isEmpty() || studentID.getText().isEmpty();
 				
 	}
 	
@@ -281,7 +307,7 @@ public class Controller {
 	
 	//returnerer True hvis registerCourseID eller courseYear eller en av togglebuttons ikke er fylt inn/presset
 	private boolean ifAnyFieldEmpty() {
-		return registerCourseID.getText().isEmpty()  || courseYear.getText().isEmpty() || (!semesterAutumn.isSelected() && !semesterSpring.isSelected()) ||
+		return registerCourseID.getText().isEmpty() || courseYear.getText().isEmpty() || (!semesterAutumn.isSelected() && !semesterSpring.isSelected()) ||
 				(!gradeA.isSelected() && !gradeB.isSelected() && !gradeC.isSelected() && !gradeD.isSelected() &&  !gradeE.isSelected());
 	}
 }

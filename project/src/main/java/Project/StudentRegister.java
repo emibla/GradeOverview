@@ -31,17 +31,23 @@ public class StudentRegister {
 				.collect(Collectors.toList());
 	}
 	*/
+	/**
+	 * 
+	 * @param studentID
+	 * @param course
 	
 	public void addCourseToStudent(String studentID, Course course) {
 		 ArrayList<Course> studentCourses;
 		for(int i = 0; i < students.size(); i++) {
 			if(getStudents().get(i).getStudentID().equals(studentID)) {
 				//this.students.registerNewCourse(course);
+	
+				
 			}
 		}
 	}
 	
-	
+	 */
 	
 	//Opprett ny student
 	//hvis sann, returner true (ny student), hvis ikke returnerer komplett eller finnes fra før
@@ -60,10 +66,14 @@ public class StudentRegister {
 		return newCourse;		
 	}
 	
-	
+	/**
+	 * Method to find student by studentID
+	 * @param studentID 
+	 * @return returns a student  if found, else returns null
+	 */
 	public Student findStudentByID(String studentID) {
 		//ArrayList<Student> studentIDsearch = new ArrayList();
-		Student stud;
+		//Student stud;
 		for(int i = 0; i < students.size(); i++) {
 			if(getStudents().get(i).getStudentID().equals(studentID)) {
 				return getStudents().get(i);
