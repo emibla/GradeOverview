@@ -18,9 +18,8 @@ public class App extends Application {
 	}
 	
 	/*
-	 * Starter applikasjonen
+	 * Start application
 	 */
-	
 	public static void main(final String[]args) {
 		launch();
 	}
