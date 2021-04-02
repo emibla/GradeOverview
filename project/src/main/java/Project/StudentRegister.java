@@ -1,7 +1,9 @@
 package Project;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentRegister {
 	
@@ -25,12 +27,21 @@ public class StudentRegister {
 	}
 	
 	/*
-	public List<Course> getCoursesByStudentID(String studentID){
-		return courses.stream()
-				.filter(p -> p.getStudentID().equals(studentID))
-				.collect(Collectors.toList());
+	public List<Course> getCoursesByID(String courseID){
+		(match = courses.stream()
+				.filter(course -> course.getCourseID() == courseID)
+				.orElse(null);
+		if (match !=null) {
+			return match;
+		} else {
+			return null;
+		}
 	}
 	*/
+	
+	
+	
+	
 	/**
 	 * 
 	 * @param studentID
@@ -57,6 +68,8 @@ public class StudentRegister {
 		return newStudent;
 	}
 	
+	
+
 	/*
 	 * Opprett nytt emne
 	 */
@@ -64,6 +77,23 @@ public class StudentRegister {
 		Course newCourse = new Course(courseID, semester, year, grade);	
 		this.courses.add(newCourse);
 		return newCourse;		
+	}
+	
+	
+	public boolean findCourseByID(String studentID, String courseID) {
+		boolean ifSuccess = false;
+		for(int i = 0; i < students.size(); i++ ) {
+			if(students.get(i).getStudentID().equals(studentID)) {
+				for(int b = 0; b < courses.size(); b++) {
+					if(getCourses().get(b).getCourseID().equals(courseID)) {
+						ifSuccess = true;
+					}
+			}
+		}
+			
+		}
+		return ifSuccess;
+		
 	}
 	
 	/**
@@ -81,6 +111,7 @@ public class StudentRegister {
 		}
 		return null;
 	}
+	
 	
 	/*
 	 * Didn't work

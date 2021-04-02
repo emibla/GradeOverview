@@ -249,46 +249,125 @@ public class Controller {
 			errorRegisterCourse.setText("Fyll alle felter");
 			return;
 		}
+		
+		getSemester();
+		getGrade();
+		
+		String studentID = searchStudentID.getText();
+		Student stud = studentRegister.findStudentByID(studentID);
+		Course cour = new Course(registerCourseID.getText(), getSemester(), courseYear.getText(), getGrade());
+		String cId = registerCourseID.getText();
+		String newGrade = getGrade();
+		int oldGradeAsInt = 0;
+		int newGradeAsInt = gradeAsInt(newGrade);
+		try {
+		oldGradeAsInt += gradeAsInt(stud.findCourseByID(cId).getGrade());}
+		catch(NullPointerException n) {
+			System.out.println(n.getMessage());
+		}
+		//Sjekker om courseID er lagt til fra før. Hvis karakteren har en høyere verdi, erstattes den
+		//if(studentRegister.findCourseByID(studentID, cId)){ // &&  cId > studentID) 
+		if(stud.findCourseByID(cId) != null && (newGradeAsInt > oldGradeAsInt)) {
+			
+			System.out.println(cour.toString());
+				stud.removeCourse(registerCourseID.getText());
+					stud.addCourse(cour);
+					courseTable.getItems().clear();
+					courseTable.getItems().addAll(stud.getCourses());
+					System.out.println("finnes fra før");
+			
+		//}
+		//System.out.println(cour.toString());
+		//if(stud.getCourses().contains(cour.getCourseID())) {
+		//	stud.getCourses().remove(cour);{
+		//		stud.addCourse(cour);
+		//		courseTable.getItems().clear();
+		//		courseTable.getItems().addAll(stud.getCourses());
+		//		System.out.println(cour.toString());
+		//	}
+		} else if(stud.findCourseByID(cId) != null && (newGradeAsInt <= oldGradeAsInt)){
+			errorRegisterCourse.setText("Du har bedre karakter i dette emnet fra før");
+			
+		
+		}else {
+		//registrerer det nye courset og legger det i testList
+		stud.addCourse(cour);
+		}
+		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt
+		courseTable.getItems().clear();
+		courseTable.getItems().addAll(stud.getCourses());
+		}
+	
+	
+	/*
+	 * Collects the semester from ToggleButton
+	 */
+	
+	private String getSemester() {
 		String sem = "";
-		String grad = "";
 		
 		Toggle semesterTogger = semesterToggle.getSelectedToggle();
+		
 		if (semesterTogger == semesterAutumn) {
 			sem = "Høst";			
 		}
 		else if (semesterTogger == semesterSpring) {
 			sem = "Vår";
-		}
-		
-		Toggle gradeTogger = gradeToggle.getSelectedToggle();
-		if (gradeTogger == gradeA) {
-			grad = "A";			
-		}
-		else if (gradeTogger == gradeB) {
-			grad = "B";
-		}
-		else if (gradeTogger == gradeC) {
-			grad = "C";
-		}		
-		else if (gradeTogger == gradeD) {
-			grad = "D";
-		}		
-		else if (gradeTogger == gradeE) {
-			grad = "E";
-		}
-		
-		String studentID = searchStudentID.getText();
-		Student stud = studentRegister.findStudentByID(studentID);
-		Course cour = new Course(registerCourseID.getText(), sem, courseYear.getText(), grad);
-	
-		//registrerer det nye courset og legger det i testList
-		stud.addCourse(cour);
-		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt
-		courseTable.getItems().clear();
-		courseTable.getItems().addAll(stud.getCourses());
+		} 
+		return sem;
 	}
 	
+	
+	/*
+	 * Collects the grade from ToggleButton
+	 */
+	
+	private String getGrade() {
+	
+	String grad = "";
+	
+	Toggle gradeTogger = gradeToggle.getSelectedToggle();
+	if (gradeTogger == gradeA) {
+		grad = "A";			
+	}
+	else if (gradeTogger == gradeB) {
+		grad = "B";
+	}
+	else if (gradeTogger == gradeC) {
+		grad = "C";
+	}		
+	else if (gradeTogger == gradeD) {
+		grad = "D";
+	}
+	else if (gradeTogger == gradeE) {
+		grad = "E";
+	}		
+	return grad;
 
+	}
+	
+	/*
+	 * Gives grade a value
+	 */
+	private int gradeAsInt(String grade) {
+		if(grade.equals("A")) {
+			return 5;
+		}
+		else if(grade.equals("B")){ 
+			return 4;
+		}
+		else if(grade.equals("C")){ 
+			return 3;
+		}
+		else if(grade.equals("D")){ 
+			return 2;
+		}
+		else {
+			return 1;
+		}
+		
+	}
+	
 	//Update table method som kjøres hver gang noen legger til et nytt course
 	public void updateTables() {
 		//something

@@ -1,6 +1,7 @@
 package Project;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /* 
  * KLasse som oppretter en student og sier hvilke attributter studenten skal ha
@@ -40,6 +41,33 @@ public class Student {
 	public ArrayList<Course> getCourses(){
 		return this.studentCourses;
 	}
+	
+
+	
+	public void removeCourse(String courseID) {
+		Iterator<Course> iterator = studentCourses.iterator();
+		while(iterator.hasNext()) {
+			Course nCourse = iterator.next();
+			if(nCourse.getCourseID().equals(courseID)) {
+				iterator.remove();
+				studentCourses.remove(nCourse);
+				
+			}
+		}
+	}
+	
+
+	
+	public Course findCourseByID(String courseID) {
+		for(int i = 0; i < studentCourses.size(); i++) {
+			if(getCourses().get(i).getCourseID().equals(courseID)) {
+				return getCourses().get(i);
+			}
+		}
+		return null;
+	}
+	
+	
 	
 	public String getFirstName() {
 		return firstName;
