@@ -3,19 +3,22 @@ package Project;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javafx.scene.control.TableColumn;
+
 /* 
- * KLasse som oppretter en student og sier hvilke attributter studenten skal ha
+ * KLasse som oppretter en student og sier hvilke attributter studenten skal ha, håndterer coursene til hver student
  */
+
+// SPM TIL STUDASS: Kan man lage et student objekt hvis konstruktøren er private
 
 public class Student {
 	
 	private String firstName;
 	private String lastName;
-	private String studentID;
+	private final String studentID;
 	
 	//Arraylist med alle emner hver enkelt student har
 	private ArrayList<Course> studentCourses;
-	
 	
 	/**
 	 * 
@@ -41,9 +44,7 @@ public class Student {
 	public ArrayList<Course> getCourses(){
 		return this.studentCourses;
 	}
-	
 
-	
 	public void removeCourse(String courseID) {
 		Iterator<Course> iterator = studentCourses.iterator();
 		while(iterator.hasNext()) {
@@ -56,7 +57,41 @@ public class Student {
 		}
 	}
 	
-
+	/*
+	 * Calculates the average of grades
+	 */
+	//TableColumn<Course, String> grade
+	public String averageGrade (String studentID) {	
+		
+		double sum = 0;
+		double num = 0;
+		String avg = " hhh";
+		double average = 0;
+		//for (int s = 0; s < students.size(); s++) {
+		
+			//if(students.get(s).getStudentID().equals(studentID)){
+				for (int i = 0; i < studentCourses.size(); i++) {
+					if (studentCourses.get(i).getGrade().equals("A")) {
+						sum += 5;
+						num += 1;
+					} else if (studentCourses.get(i).getGrade().equals("B")) {
+						sum += 4;
+						num += 1;
+					} else if (studentCourses.get(i).getGrade().equals("C")) {
+						sum += 3;
+						num += 1;
+					} else if (studentCourses.get(i).getGrade().equals("D")) {
+						sum += 2;
+						num += 1;			
+					} else if (studentCourses.get(i).getGrade().equals("E")) {
+						sum += 1;
+						num += 1;
+				}
+				average = sum/num;
+				avg = String.valueOf(average);
+		}
+		return avg;
+	}
 	
 	public Course findCourseByID(String courseID) {
 		for(int i = 0; i < studentCourses.size(); i++) {
@@ -66,7 +101,6 @@ public class Student {
 		}
 		return null;
 	}
-	
 	
 	
 	public String getFirstName() {
@@ -79,6 +113,14 @@ public class Student {
 	
 	public String getStudentID() {
 		return studentID;
+	}
+	
+	public String setFirstName() {
+		return firstName;
+	}
+	
+	public String setLastName() {
+		return lastName;
 	}
 	
 	@Override
