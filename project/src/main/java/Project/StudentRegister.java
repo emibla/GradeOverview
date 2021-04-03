@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javafx.scene.control.TableColumn;
+
 public class StudentRegister {
 	
 	/*
@@ -15,16 +17,16 @@ public class StudentRegister {
 	 */
 	
 	public ArrayList<Student> students = new ArrayList<Student>();
-	public ArrayList<Course> courses = new ArrayList<Course>();
+	//public ArrayList<Course> courses = new ArrayList<Course>();
 	
 	
 	public ArrayList<Student> getStudents() {
 		return this.students;
 	}
 	
-	public ArrayList<Course> getCourses() {
-		return this.courses;
-	}
+	//public ArrayList<Course> getCourses() {
+	//	return this.courses;
+	//}
 	
 	/*
 	public List<Course> getCoursesByID(String courseID){
@@ -37,7 +39,7 @@ public class StudentRegister {
 			return null;
 		}
 	}
-	*/
+	
 	
 	
 	
@@ -68,18 +70,19 @@ public class StudentRegister {
 		return newStudent;
 	}
 	
-	
 
 	/*
 	 * Opprett nytt emne
 	 */
+	/*
 	public Course registerNewCourse(String courseID, String semester, String year, String grade) {
 		Course newCourse = new Course(courseID, semester, year, grade);	
 		this.courses.add(newCourse);
 		return newCourse;		
 	}
 	
-	
+	*/
+	/*
 	public boolean findCourseByID(String studentID, String courseID) {
 		boolean ifSuccess = false;
 		for(int i = 0; i < students.size(); i++ ) {
@@ -94,13 +97,30 @@ public class StudentRegister {
 		}
 		return ifSuccess;
 		
-	}
+	}*/
+	
+//	
+//	public double averageGrade (TableColumn<Course, String> grade) {
+//		int grad = Integer.parseInt(TableColumn<Course, String> grade);)
+//		int sum = 0;
+//		int num = 0;
+//		for (int i = 0; i < students.size(); i++) {
+//			sum += i;
+//			num += 1;
+//		}
+//		
+//		return (sum / num);
+//		
+//	}
+	
 	
 	/**
 	 * Method to find student by studentID
 	 * @param studentID 
 	 * @return returns a student  if found, else returns null
 	 */
+	
+	//må ha en nullsjekk hver gang brukes pga return null, se 
 	public Student findStudentByID(String studentID) {
 		//ArrayList<Student> studentIDsearch = new ArrayList();
 		//Student stud;
@@ -111,6 +131,7 @@ public class StudentRegister {
 		}
 		return null;
 	}
+	
 	
 	
 	/*
