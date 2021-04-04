@@ -24,6 +24,44 @@ public class StudentRegister {
 		return this.students;
 	}
 	
+	//Opprett ny student
+	//hvis sann, returner true (ny student), hvis ikke returnerer komplett eller finnes fra før
+	public Student registerNewStudent(String firstName, String lastName, String studentID) {
+		Student newStudent = new Student(firstName, lastName, studentID);
+		this.students.add(newStudent);
+		return newStudent;
+	}
+	
+	
+	/**
+	 * Method to find student by studentID
+	 * @param studentID 
+	 * @return returns a student  if found, else returns null
+	 */
+	
+	//må ha en nullsjekk hver gang brukes pga return null, se 
+	public Student findStudentByID(String studentID) {
+		for(int i = 0; i < students.size(); i++) {
+			if(getStudents().get(i).getStudentID().equals(studentID)) {
+				return getStudents().get(i);
+			}
+		}
+		return null;
+	}
+}
+
+/*
+*******************************************************************************************************************************
+/*
+ * Opprett nytt emne
+ */
+/*
+public Course registerNewCourse(String courseID, String semester, String year, String grade) {
+	Course newCourse = new Course(courseID, semester, year, grade);	
+	this.courses.add(newCourse);
+	return newCourse;		
+}
+
 	//public ArrayList<Course> getCourses() {
 	//	return this.courses;
 	//}
@@ -39,11 +77,7 @@ public class StudentRegister {
 			return null;
 		}
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * 
 	 * @param studentID
@@ -61,93 +95,19 @@ public class StudentRegister {
 	}
 	
 	 */
-	
-	//Opprett ny student
-	//hvis sann, returner true (ny student), hvis ikke returnerer komplett eller finnes fra før
-	public Student registerNewStudent(String firstName, String lastName, String studentID) {
-		Student newStudent = new Student(firstName, lastName, studentID);
-		this.students.add(newStudent);
-		return newStudent;
+/*
+public boolean findCourseByID(String studentID, String courseID) {
+	boolean ifSuccess = false;
+	for(int i = 0; i < students.size(); i++ ) {
+		if(students.get(i).getStudentID().equals(studentID)) {
+			for(int b = 0; b < courses.size(); b++) {
+				if(getCourses().get(b).getCourseID().equals(courseID)) {
+					ifSuccess = true;
+				}
+		}
 	}
-	
-
-	/*
-	 * Opprett nytt emne
-	 */
-	/*
-	public Course registerNewCourse(String courseID, String semester, String year, String grade) {
-		Course newCourse = new Course(courseID, semester, year, grade);	
-		this.courses.add(newCourse);
-		return newCourse;		
-	}
-	
-	*/
-	/*
-	public boolean findCourseByID(String studentID, String courseID) {
-		boolean ifSuccess = false;
-		for(int i = 0; i < students.size(); i++ ) {
-			if(students.get(i).getStudentID().equals(studentID)) {
-				for(int b = 0; b < courses.size(); b++) {
-					if(getCourses().get(b).getCourseID().equals(courseID)) {
-						ifSuccess = true;
-					}
-			}
-		}
-			
-		}
-		return ifSuccess;
-		
-	}*/
-	
-//	
-//	public double averageGrade (TableColumn<Course, String> grade) {
-//		int grad = Integer.parseInt(TableColumn<Course, String> grade);)
-//		int sum = 0;
-//		int num = 0;
-//		for (int i = 0; i < students.size(); i++) {
-//			sum += i;
-//			num += 1;
-//		}
-//		
-//		return (sum / num);
-//		
-//	}
-	
-	
-	/**
-	 * Method to find student by studentID
-	 * @param studentID 
-	 * @return returns a student  if found, else returns null
-	 */
-	
-	//må ha en nullsjekk hver gang brukes pga return null, se 
-	public Student findStudentByID(String studentID) {
-		//ArrayList<Student> studentIDsearch = new ArrayList();
-		//Student stud;
-		for(int i = 0; i < students.size(); i++) {
-			if(getStudents().get(i).getStudentID().equals(studentID)) {
-				return getStudents().get(i);
-			}
-		}
-		return null;
-	}
-	
-	
-	
-	/*
-	 * Didn't work
-	public void fetchStudent(Student student) {
-		if (student == null) {
-			throw new IllegalArgumentException("Tast inn studentID");
-		}
-		
-		Student s = students.get(student.getStudentID());
-		
-//Student s = students.get(student.getStudentID());
 		
 	}
+	return ifSuccess;
 	
-	
-*/
-
-}
+}*/
