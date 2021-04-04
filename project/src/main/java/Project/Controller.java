@@ -163,8 +163,6 @@ public class Controller {
 		
 		//Test. Printer ut studentene i konsollen
 		System.out.println(studentRegister.toString());
-	
-	
 	}	//initialize end
 	
 	
