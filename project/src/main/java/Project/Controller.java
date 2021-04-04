@@ -40,16 +40,12 @@ public class Controller {
 	public TextField lastName;
 	@FXML
 	public TextField studentID;
-	@FXML
-	public Button registerStudentButton;
 
-	// Hent inn Student
+	// Search for Student
 	@FXML
 	public TextField searchStudentID;
-	@FXML
-	public Button searchStudentButton;
 
-	// Legg til karakterer
+	// Add course
 	@FXML
 	public TextField registerCourseID;
 	@FXML
@@ -68,22 +64,24 @@ public class Controller {
 	public ToggleButton semesterSpring;
 	@FXML
 	public TextField courseYear;
-	@FXML
-	public Button registerCourseButton;
 	@FXML 
 	public ToggleGroup semesterToggle;
 	@FXML
 	public ToggleGroup gradeToggle;
 
 
-	// ErrorLabels
+	// Error labels
 	@FXML
 	public Label errorRegisterStudent;
 	@FXML
 	public Label errorSearchStudent;
 	@FXML
 	public Label errorRegisterCourse;
+	@FXML
+	public Label errorCalc;
 	
+	
+	// Logged in Labels
 	@FXML
 	public Label loggedInStudentName;
 	@FXML
@@ -101,27 +99,22 @@ public class Controller {
 	@FXML
 	public TableColumn<Course, String> year;
 	
-	@FXML
-	public Button averageButton;
-	
+	// Calculating
 	@FXML
 	public Label averageLabel;
-
-	/*
-	 * @FXML private ObservableList<Course> list;
-	 */
+	@FXML
+	public Label medianLabel;
 
 	/**
 	 * initializing a new StudentRegister
 	 */
 	StudentRegister studentRegister = new StudentRegister();
-	//tudentRegister testStudents = new StudentRegister();
-	//StudentRegister testCourse = new StudentRegister();
 
 
 	/**
 	 * Method to fill register with testdata
 	 */
+	
 	public void fillWithTestData() {
 	studentRegister.registerNewStudent("Emily", "Test", "1234");
 	studentRegister.registerNewStudent("Mari", "Test", "2345");
@@ -163,9 +156,6 @@ public class Controller {
 			List<Student> students = studentRegister.getStudents();
 			System.out.println(students);
 			
-			//Når vi fjerner denne, vil det ikke vises testdata lenger
-			// courseTable.getItems().add(new Course("TDT4246", "Høst", "2020", "B"));
-			
 
 		} catch (NullPointerException n) {
 			System.out.println(n.getMessage());
@@ -173,84 +163,13 @@ public class Controller {
 		
 		//Test. Printer ut studentene i konsollen
 		System.out.println(studentRegister.toString());
-			
-		//knapp for å registrere student
-		registerStudentButton.setOnAction(actionEvent -> {
-			addStudent();
-		});
-		
-		//knapp for å søke etter student og sette navn på studenten i label
-		searchStudentButton.setOnAction(actionEvent -> {
-			try{
-				searchStudent();
-				loggedInStudentName();
-			} catch(IllegalArgumentException e) {
-				errorSearchStudent.setText("Tast inn gyldig studentID, 4 siffer");
-			}
-		});
-		
-		//knapp for å registrere emne
-		registerCourseButton.setOnAction(actionEvent -> {
-			try {
-				addCourse();
-		} catch(IllegalStateException e) {
-			errorRegisterCourse.setText("Logg inn først");
-		}
-	});
-		
-		averageButton.setOnAction(actionEvent -> {
-			Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
-			stud.averageGrade(loggedInStudentID.getText());
-			averageLabel.setText("Ditt karaktersnitt er: " + stud.averageGrade(loggedInStudentID.getText()));
-		});
-	}
-
-	//Tester om buttonclick endrer label og henter fra textfield
-	@FXML
-	public void changeLabel() {
-		errorSearchStudent.setText(searchStudentID.getText());
-	}
 	
 	
-	public void addStudent() {
-		//StudentRegister studReg;
-		//lager et nytt objekt av typen StudentRegister
-		//studReg = new StudentRegister();
-		errorRegisterStudent.setText(""); //setText og ikke = fordi det er en label og ikke en String 
-		if(ifAnyFieldRegisterStudentEmpty()) {
-			errorRegisterStudent.setText("Fyll alle felter");
-			return;
-		}
-		//registrerer det nye courset og legger det i testList
-		//studReg.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
-		studentRegister.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
-		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt
-		//System.out.println(studReg.getStudents());
-		errorRegisterStudent.setText("Registrert! Logg inn for å registrere emner");
-	}
+	}	//initialize end
 	
-	//Søker etter student i students- arraylist
-	public void searchStudent() {
-//		if(ifSearchFieldEmpty()) {
-//			errorSearchStudent.setText("Tast inn studentID");
-//			return;}
-		errorSearchStudent.setText("");
-		if(!isValidStudentID()) {
-			throw new IllegalArgumentException("StudentID består av 4 siffer");
-		}
-		courseTable.getItems().clear();
-		String studentID = searchStudentID.getText();
-		Student stud = studentRegister.findStudentByID(studentID);
-		if(stud  == null) {
-			errorSearchStudent.setText("StudentID ble ikke funnet,\nvennligst registrer deg");
-		}else {
-		//Oppdaterer tabellen og getter alle course som ligger i studentRegister på nytt
-		courseTable.getItems().addAll(stud.getCourses());
-		loggedInStudentID();
-		}
-	}
 	
-
+	
+	
 	// Printer navnet til studenten når den er logget inn
 	@FXML
 	public void loggedInStudentName() {
@@ -262,13 +181,10 @@ public class Controller {
 			errorSearchStudent.setText("StudentID ble ikke funnet,\nvennligst registrer deg");
 		}else {
 			try {
-				loggedInStudentName.setText("Velkommen "+ stud.getFirstName()+ " " + stud.getLastName());
+				loggedInStudentName.setText("Velkommen, "+ stud.getFirstName()+ " " + stud.getLastName());
 			}catch(Exception e) {
 				loggedInStudentName.setText("Finner ikke student");
 		}}
-//		if(stud  == null) {
-//			errorSearchStudent.setText("StudentID ble ikke funnet,\nvennligst registrer deg");
-//		}
 	}
 	
 	public void loggedInStudentID() {
@@ -279,15 +195,70 @@ public class Controller {
 		}
 	}
 	
-//	public void setAverageGrade() {
-//	}
+	
+	public void addStudent() {
+		errorRegisterCourse.setText("");
+		errorSearchStudent.setText("");
+		errorRegisterStudent.setText(""); 
+		
+		if(ifAnyFieldRegisterStudentEmpty()) {
+			errorRegisterStudent.setText("Fyll alle felter");
+			throw new IllegalStateException("Fyll alle felter"); //argument eller state?
+		}else if(isValidFirstName()) {
+			errorRegisterStudent.setText("Skriv inn et gyldig fornavn, kun bokstaver");	
+			throw new IllegalArgumentException("Skriv inn et gyldig fornavn, kun bokstaver");
+		}else if(isValidLastName()) {
+			errorRegisterStudent.setText("Skriv inn et gyldig etternavn, kun bokstaver");	
+			throw new IllegalArgumentException("Tast inn et gyldig etternavn, kun bokstaver");
+		}else if(!isValidStudentID()) {
+			errorRegisterStudent.setText("Student ID består av 4 siffer");
+			throw new IllegalArgumentException("Student ID består av 4 siffer");
+		}	
+		studentRegister.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
+		errorRegisterStudent.setText("Registrert! Logg inn for å registrere emner");
+	}
+	
+	
+	/*
+	 * Search for student in students arraylist
+	 */
+	
+	public void searchStudent() {
+		errorRegisterCourse.setText("");
+		errorSearchStudent.setText("");
+		errorRegisterStudent.setText("");
+		errorCalc.setText("");
+		
+		if(ifSearchFieldEmpty()) {
+			errorSearchStudent.setText("Tast inn din Student ID");
+			throw new IllegalStateException("Tast inn din Student ID");
+		}
+		else if(!isValidStudentID()) {
+			errorSearchStudent.setText("Student ID består av 4 siffer");
+			throw new IllegalArgumentException("Student ID består av 4 siffer");
+		}
+		
+		courseTable.getItems().clear();
+		String studentID = searchStudentID.getText();
+		Student stud = studentRegister.findStudentByID(studentID);
+		
+		if(stud  == null) {
+			errorSearchStudent.setText("StudentID ble ikke funnet,\nvennligst registrer deg");
+		}else {
+			
+		//Oppdaterer tabellen og getter alle course som ligger i studentRegister på nytt
+		courseTable.getItems().addAll(stud.getCourses());
+		loggedInStudentID();
+		loggedInStudentName();
+		}
+}	
 
 	//Metode for å hente ut informasjon fra registrering av course
 	public void addCourse() {
-		//StudentRegister testList;
-		// lager en ny liste av klassen StudentRegister
-		//testList = new StudentRegister();
 		errorRegisterCourse.setText("");
+		errorSearchStudent.setText("");
+		errorRegisterStudent.setText(""); 
+		
 		//hvis ifAnyFieldEmpty returnerer True, kastes en feilmelding i label og returnerer
 		if(loggedInStudentID.getText().isEmpty()) {
 			errorRegisterCourse.setText("Logg inn først");
@@ -295,59 +266,62 @@ public class Controller {
 		}else if(ifAnyFieldEmpty()){
 			errorRegisterCourse.setText("Fyll alle felter");
 			throw new IllegalArgumentException("Fyll alle felter");
+//		} else if(!isValidCourseID()) {
+//			errorRegisterCourse.setText("Fyll inn emnenavn med bokstaver og tall");
+//			throw new IllegalArgumentException("Feil i emnenavn");
+		} else if(!isValidYear()) {
+			errorRegisterCourse.setText("Tast inn gyldig år");
+			throw new IllegalArgumentException("Ugyldig år");
 		}
+		
 		getSemester();
 		getGrade();
 		
-		String studentID = searchStudentID.getText();
+		String studentID = loggedInStudentID.getText();
 		Student stud = studentRegister.findStudentByID(studentID);
-		if(stud  == null) {
-			errorSearchStudent.setText("StudentID ble ikke funnet,\nvennligst registrer deg");
-		return; //avsluttes hvis ikke studentID finnes
-		}
 		
-		Course cour = new Course(registerCourseID.getText(), getSemester(), courseYear.getText(), getGrade());
+//		//denne skal vel ikke være her?
+//		if(stud  == null) {
+//			errorSearchStudent.setText("StudentID ble ikke funnet,\nvennligst registrer deg");
+//		return; //avsluttes hvis ikke studentID finnes
+//		}
+		
+		Course cour = new Course(registerCourseID.getText(), getSemester(), Integer.parseInt(courseYear.getText()), getGrade());
 		String cId = registerCourseID.getText();
 		String newGrade = getGrade();
 		int oldGradeAsInt = 0;
-		int newGradeAsInt = gradeAsInt(newGrade);
+		int newGradeAsInt = Student.gradeAsInt(newGrade);
+		
+		//Skjer når man legger til en courseID som ikke er lagt til fra før (?)
+		//Usikker på hvordan jeg burde sette opp denne sjekken, for den skal jo være null her, det er helt greit. Det er jo ikke lagt til et fag
+//		if(stud.findCourseByID(cId)== null) {
+//			throw new IllegalStateException("Fag registrert for første gang");
+//		}
 		try {
-		oldGradeAsInt += gradeAsInt(stud.findCourseByID(cId).getGrade());}
+		oldGradeAsInt += Student.gradeAsInt(stud.findCourseByID(cId).getGrade());}
 		catch(NullPointerException n) {
 			System.out.println(n.getMessage());
 		}
+		
+		
+		//HVOR sjekker den om den eksisterer fra før???
 		//Sjekker om courseID er lagt til fra før. Hvis karakteren har en høyere verdi, erstattes den
-		//if(studentRegister.findCourseByID(studentID, cId)){ // &&  cId > studentID) 
 		if(stud.findCourseByID(cId) != null && (newGradeAsInt > oldGradeAsInt)) {
-			
 			System.out.println(cour.toString());
 				stud.removeCourse(registerCourseID.getText());
 					stud.addCourse(cour);
-					courseTable.getItems().clear();
-					courseTable.getItems().addAll(stud.getCourses());
-					System.out.println("finnes fra før");
-			
-		//}
-		//System.out.println(cour.toString());
-		//if(stud.getCourses().contains(cour.getCourseID())) {
-		//	stud.getCourses().remove(cour);{
-		//		stud.addCourse(cour);
-		//		courseTable.getItems().clear();
-		//		courseTable.getItems().addAll(stud.getCourses());
-		//		System.out.println(cour.toString());
-		//	}
+					courseTable.getItems().clear(); //Fjerner hele tabellen for å fjerne den gamle karakterern
+					courseTable.getItems().addAll(stud.getCourses()); //Laster inn alle karakterene på nytt i tabellen
 		} else if(stud.findCourseByID(cId) != null && (newGradeAsInt <= oldGradeAsInt)){
-			errorRegisterCourse.setText("Du har bedre karakter i dette emnet fra før");
-		
+			errorRegisterCourse.setText("Du har bedre karakter i dette emnet fra før");	
 		}else {
 		//registrerer det nye courset og legger det i testList
 		stud.addCourse(cour);
 		}
-		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt
+		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt for å unngå duplisering i tabellen
 		courseTable.getItems().clear();
 		courseTable.getItems().addAll(stud.getCourses());
 		}
-	
 	
 	/*
 	 * Collects the semester from ToggleButton
@@ -396,74 +370,141 @@ public class Controller {
 
 	}
 	
+	
+	public void average() {
+		errorCalc.setText("");
+		medianLabel.setText("");
+		
+		if (loggedInStudentID.getText().isEmpty()) {
+			errorCalc.setText("Logg inn først");
+			return;
+		}
+		try {
+		Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
+		stud.averageGrade(loggedInStudentID.getText());
+		averageLabel.setText("Ditt karaktersnitt er: " + stud.averageGrade(loggedInStudentID.getText()));
+		} catch(IllegalStateException e){
+			errorCalc.setText("Logg inn først!");
+		}
+	}
+	
+	
+	public void median() {
+		errorCalc.setText("");
+		averageLabel.setText("");
+		
+		if (loggedInStudentID.getText().isEmpty()) {
+			errorCalc.setText("Logg inn først");
+			return;
+		} 
+		
+		try {
+		Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
+		stud.medianGrade(loggedInStudentID.getText());
+		medianLabel.setText("Medianen til ditt karaktersnitt er: " + stud.medianGrade(loggedInStudentID.getText()));
+		} 
+		catch(IllegalStateException e){
+			errorCalc.setText("Logg inn først!");
+		}				
+	}
+	
+	
+	
+
+	
 	/*
-	 * Gives grade a value
+	 * Returns true if any registration Textfields is empty
 	 */
-	private int gradeAsInt(String grade) {
-		if(grade.equals("A")) {
-			return 5;
-		}
-		else if(grade.equals("B")){ 
-			return 4;
-		}
-		else if(grade.equals("C")){ 
-			return 3;
-		}
-		else if(grade.equals("D")){ 
-			return 2;
-		}
-		else {
-			return 1;
-		}
-	}
 	
-	//Update table method som kjøres hver gang noen legger til et nytt course
-	public void updateTables() {
-		//something
-	}
-	
-	//Returnerer True hvis firstName, lastName eller studentID ikke er fylt ut
 	private boolean ifAnyFieldRegisterStudentEmpty() {
 		return firstName.getText().isEmpty() || lastName.getText().isEmpty() || studentID.getText().isEmpty();
 	}
-//	
-//	//Returnerer True hvis searchStudentID textField er empty
-//	private boolean ifSearchFieldEmpty() {
-//		return searchStudentID.getText().isEmpty();
-//	}
 	
-	//returnerer True hvis registerCourseID eller courseYear eller en av togglebuttons ikke er fylt inn/presset
+	/*
+	 * Returns true if Textfield searchStudentID is empty
+	 */
+	
+	private boolean ifSearchFieldEmpty() {
+		return searchStudentID.getText().isEmpty();
+	}
+	
+	/*
+	 * Returns true if Textfield registerCourseID is empty, or either of ToggleButtons is not pressed
+	 */
+	
 	private boolean ifAnyFieldEmpty() {
 		return registerCourseID.getText().isEmpty() || courseYear.getText().isEmpty() || (!semesterAutumn.isSelected() && !semesterSpring.isSelected()) ||
 				(!gradeA.isSelected() && !gradeB.isSelected() && !gradeC.isSelected() && !gradeD.isSelected() &&  !gradeE.isSelected());
 	}
-
 	
 	/*
-	 * Returns True if format is a studentID number of 4 digits
-	 * Ønskelig å legge inn at studentID ikke kan være bokstaver eller tegn 
+	 * Returns || firstName.getText().length()<30	|| firstName.getText().length()>2)
+	 */
+	
+	private boolean isValidFirstName() {
+		return (!firstName.getText().matches("^[a-zA-Z]*$"));
+	}
+		
+	private boolean isValidLastName() {
+		return (!lastName.getText().matches("^[a-zA-Z]*$"));
+	}
+	
+	
+	/*
+	 * Returns true if studentID is a number of 4 digits
 	 */ 
-	 
+	
 	private boolean isValidStudentID() {
-	//	for	(int i = 0; i > studentID.length(); i++) {
-	//		char a = studentID.charAt(i);
-		if (!searchStudentID.getText().matches("\\d\\d\\d\\d")|| searchStudentID.getText().isEmpty() || searchStudentID.getText().length() != 4 ) {
+		if ((!searchStudentID.getText().matches("^[0-9]*$")) || searchStudentID.getText().length() != 4) {
+			return false; 
+			}
+		return true;
+	}
+	
+	private boolean isValidCourseID() {
+		if ((!courseID.getText().matches("^[0-9]*$")) || (!courseID.getText().matches("^[a-zA-Z]*$"))) {
 			return false;
 		}
 		return true;
 	}
-}
+	
+	/*
+	 * Returns true if Textfield courseYear is a year between 1900 and 2100
+	 */ 
+	
+	private boolean isValidYear() {
+		if (Integer.parseInt(courseYear.getText()) < 1900 || Integer.parseInt(courseYear.getText()) > 2100) {
+			return false;
+		}
+		return true;
+	}
 	
 	/*
 	 * Returns True if format is first name of String, last name of String, and StudentID is of 4 digits
 	 
 	private boolean isValidRegistration() {
-		
+		if (!firstName.getText().matches("^[a-zA-Z]*$") || firstName.getText().length()>30	|| firstName.getText().length()<30 || 
+				!lastName.getText().matches("^[a-zA-Z]*$") || lastName.getText().length()>30	|| lastName.getText().length()<30 ||
+				(!isValidStudentID())) {
+		return false; 
+				}
+				return true;
+}
+	
+	 */
+}
+
+
+
+/*	
+private boolean isValidCourseID() {
+	if (searchStudentID.getText().isEmpty()){
+		return false;
 	}
-		return registerStudentID.getText() {
-			
-		}
-}*/
+	return true;
+}
+
+
 
 /*
  ******************************************************************************************************************
@@ -476,29 +517,6 @@ public class Controller {
  			List<Student> students = testStudents.getStudents();
 			System.out.println(students);
  * 
- //hente ut text fra textfield
-public void changeLabel() {
-	errorSearchStudent.setText(searchStudentID.getText());
-}
 
-
- * public void getCourses() { ObservableList<String> listItems =
- * FXCollections.observableArrayList(); for(int i=0; i< courses.size(); i++) {
- * Course element = courses.get(i); } Course.setItems(listItems);
- * 
- * }
- * 	
-	// SøkButtonOnAction --- brukes ikke
-	@FXML
-	public void searchStudent_button_on_action() {
-		try {
-			// Hente ut verdien tastet inn i textfield og finne studenten med samme
-			// studentID i arrayList Student
-			String studentID = searchStudentID.getText();
-			System.out.println(studentID);
-
-		} catch (Exception e) {
-			errorSearchStudent.setText("Finner ikke student, er du sikker på at du har tastet rett StudentID?");
-		}
 
 	}*/
