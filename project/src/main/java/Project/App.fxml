@@ -15,16 +15,16 @@
       <AnchorPane prefHeight="551.0" prefWidth="258.0" style="-fx-background-color: #828E84#828E84;" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="searchStudentID" layoutX="20.0" layoutY="192.0" promptText="Studentnummer" />
-            <Button fx:id="searchStudentButton" layoutX="191.0" layoutY="192.0" mnemonicParsing="false" text="Søk" />
+            <Button fx:id="searchStudentButton" layoutX="191.0" layoutY="192.0" mnemonicParsing="false" onAction="#searchStudent" text="Søk" />
             <TextField fx:id="firstName" layoutX="20.0" layoutY="56.0" prefHeight="27.0" prefWidth="100.0" promptText="Fornavn" />
             <TextField fx:id="lastName" layoutX="124.0" layoutY="56.0" prefHeight="27.0" prefWidth="100.0" promptText="Etternavn" />
             <TextField fx:id="studentID" layoutX="20.0" layoutY="90.0" prefHeight="27.0" prefWidth="154.0" promptText="Studentnummer" />
-            <Button fx:id="registerStudentButton" layoutX="175.0" layoutY="90.0" mnemonicParsing="false" text="Registrer!" />
+            <Button fx:id="registerStudentButton" layoutX="175.0" layoutY="90.0" mnemonicParsing="false" onAction="#addStudent" text="Registrer!" />
             <Label layoutX="20.0" layoutY="31.0" text="Registrer deg her:" />
             <Label layoutX="20.0" layoutY="169.0" text="Hent inn din side:" />
             <Label layoutX="20.0" layoutY="277.0" text="Legg til karakterer:" />
             <TextField fx:id="registerCourseID" layoutX="20.0" layoutY="296.0" prefHeight="27.0" prefWidth="156.0" promptText="Navn på emne" />
-            <Button fx:id="registerCourseButton" layoutX="118.0" layoutY="425.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="58.0" text="Legg til" />
+            <Button fx:id="registerCourseButton" layoutX="118.0" layoutY="425.0" mnemonicParsing="false" onAction="#addCourse" prefHeight="27.0" prefWidth="58.0" text="Legg til" />
             <TextField fx:id="courseYear" layoutX="20.0" layoutY="425.0" prefHeight="27.0" prefWidth="96.0" promptText="År" />
             
             <ToggleButton fx:id="semesterAutumn" layoutX="20.0" layoutY="390.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="72.0" text="Høst">
@@ -72,7 +72,7 @@
    <center>
       <AnchorPane accessibleText="Karakter" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #B2BEB5#B2BEB5;" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="loggedInStudentName" layoutX="42.0" layoutY="43.0" text="Her kommer studentnavn når innlogget">
+            <Label fx:id="loggedInStudentName" layoutX="42.0" layoutY="43.0">
                <font>
                   <Font size="18.0" />
                </font>
@@ -82,9 +82,12 @@
             <Label text="Logg inn med din studentID eller registrer deg" />
             </placeholder>
             </TableView>
-            <Button fx:id="averageButton" layoutX="42.0" layoutY="331.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Karaktersnitt" />
-            <Label fx:id="averageLabel" layoutX="42.0" layoutY="369.0" text="Her kommer gjennomsnitt" />
+            <Button fx:id="averageButton" layoutX="42.0" layoutY="331.0" mnemonicParsing="false" onAction="#average" prefHeight="27.0" prefWidth="110.0" text="Karaktersnitt" />
+            <Label fx:id="averageLabel" layoutX="42.0" layoutY="369.0" />
             <Label fx:id="loggedInStudentID" layoutX="42.0" layoutY="73.0" />
+            <Button fx:id="medianButton" layoutX="160.0" layoutY="331.0" mnemonicParsing="false" onAction="#median" prefHeight="27.0" prefWidth="145.0" text="Median karakterpoeng" />
+            <Label fx:id="medianLabel" layoutX="156.0" layoutY="369.0" />
+            <Label fx:id="errorCalc" layoutX="42.0" layoutY="409.0" />
          </children>
       </AnchorPane>
    </center>
