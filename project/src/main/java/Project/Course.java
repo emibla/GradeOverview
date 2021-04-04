@@ -3,21 +3,20 @@ package Project;
 
 /*
  * Hvert Course skal ha en emnekode, et semester, årstall og en karakter
- * Som student
  */
 
 public class Course {
 	
 	private String courseID; //Emnekode 
 	private String semester; // Høst eller Vår
-	private String year; //årstall
-	private String grade; // A, B, C, D, E
+	private int year; //årstall
+	private String grade; // A, B, C, D, E 
 	
 
-	public Course(String courseID, String semester, String year, String grade) {
+	public Course(String courseID, String semester, int year, String grade) {
 		this.courseID = courseID;
 		this.semester = semester;
-		this.year = year;
+		this.year = year; 
 		this.grade = grade;
 	}
 	
@@ -29,7 +28,7 @@ public class Course {
 		return semester;
 	}
 	
-	public String getYear() {
+	public int getYear() {
 		return year;
 	}
 	
@@ -46,10 +45,17 @@ public class Course {
 	}
 	
 	public void setSemester(String semester) {
+//		if (semester != 'H' && semester != 'V' &&  semester != 'S') {
+//		throw new IllegalArgumentException("Ugyldig semester");
+//		}
+//		this.semester = semester;
 		this.semester = semester;
 	}
 	
-	public void setYear(String year) {
+	public void setYear(int year) {
+//		if (year < 1900	|| year > 2100){
+//			throw new IllegalArgumentException("Ugyldig år");
+//		}	
 		this.year = year;
 	}
 	
