@@ -48,7 +48,6 @@ public class Course {
 //		if (semester != 'H' && semester != 'V' &&  semester != 'S') {
 //		throw new IllegalArgumentException("Ugyldig semester");
 //		}
-//		this.semester = semester;
 		this.semester = semester;
 	}
 	
