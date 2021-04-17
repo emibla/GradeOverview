@@ -3,9 +3,9 @@ package Project;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
-
-import javafx.scene.control.TableColumn;
+//import java.util.List;
+//
+//import javafx.scene.control.TableColumn;
 
 /* 
  * KLasse som oppretter en student og sier hvilke attributter studenten skal ha, håndterer coursene til hver student
@@ -81,6 +81,27 @@ public class Student {
 			return 1;
 		}
 	}
+	
+	
+/*	
+	public void setAverage() {
+		
+		if (loggedIn.isEmpty()) {
+			errorCalc.setText("Logg inn først");
+			return;
+		}
+		try {
+		Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
+		stud.averageGrade(loggedInStudentID.getText());
+		averageLabel.setText("Ditt karaktersnitt er: " + stud.averageGrade(loggedInStudentID.getText()));
+		} catch(IllegalStateException e){
+			errorCalc.setText("Logg inn først!");
+		}
+	}
+*/	
+	
+	
+	
 		
 	/*
 	 * Calculates the average of grades
@@ -192,7 +213,22 @@ public class Student {
 	
 	@Override
 	public String toString() {
-		return firstName + " " + lastName + " " + studentID;
+		return firstName + "," + lastName + "," + studentID;
+	}
+	
+	public String coursesString() {
+		String string = "";
+		for(int i = 0; i < studentCourses.size(); i++) {
+			Course c = studentCourses.get(i);
+			string += c.getCourseID() + ","+c.getSemester()+","+c.getYear()+","+c.getGrade() +";";
+		}
+		return string;
+	}
+	
+	public String toFullString() {
+	
+		
+		return firstName + "," + lastName + "," + studentID +";"+ coursesString();
 	}
 	
 	
