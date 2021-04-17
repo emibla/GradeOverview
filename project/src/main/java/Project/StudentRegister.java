@@ -7,20 +7,23 @@ import java.util.stream.Collectors;
 
 import javafx.scene.control.TableColumn;
 
-public class StudentRegister {
+public class StudentRegister{
 	
 	/*
 	 * Lage liste med studenter
 	 * Liste med emner
 	 * Registrer student
 	 * Registrere et emne
+	 * Skrive til fil
+	 * Lese fra fil
 	 */
 	
-	public ArrayList<Student> students = new ArrayList<Student>();
+	
+	public List<Student> students = new ArrayList<Student>();
 	//public ArrayList<Course> courses = new ArrayList<Course>();
 	
 	
-	public ArrayList<Student> getStudents() {
+	public List<Student> getStudents() {
 		return this.students;
 	}
 	
@@ -49,6 +52,9 @@ public class StudentRegister {
 		return null;
 	}
 }
+
+
+
 
 /*
 *******************************************************************************************************************************
