@@ -436,8 +436,6 @@ public class Controller {
 	
 	
 	
-
-	
 	/*
 	 * Returns true if any registration for student Textfields is empty
 	 */
