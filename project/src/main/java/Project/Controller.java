@@ -73,7 +73,7 @@ public class Controller {
 	
 	// Calculating
 	@FXML
-	public Label averageLabel, medianLabel;
+	private Label averageLabel, medianLabel;
 
 	/**
 	 * initializing a new StudentRegister
@@ -84,10 +84,10 @@ public class Controller {
 //	Prøvd å lage en getter for label
 	String something;
 	
-	public void getErrorCalc(String something) {
+	public void getErrorCalc() {
 		this.something = errorCalc.getText();
 	}
-
+	
 
 	/**
 	 * Method to fill register with testdata
@@ -134,7 +134,6 @@ public class Controller {
 			List<Student> students = studentRegister.getStudents();
 			System.out.println(students);
 			
-			
 
 		} catch (NullPointerException n) {
 			System.out.println(n.getMessage());
@@ -151,7 +150,7 @@ public class Controller {
 	
 	// Printer navnet til studenten når den er logget inn
 	@FXML
-	public void loggedInStudentName() {
+	private void loggedInStudentName() {
 		String ID = searchStudentID.getText();
 		//Student stud = studentRegister.findStudentByID(studentID);
 		
@@ -167,7 +166,7 @@ public class Controller {
 	}
 	
 	@FXML
-	public void loggedInStudentID() {
+	private void loggedInStudentID() {
 		try {
 		loggedInStudentID.setText(searchStudentID.getText());
 		}catch(Exception e) {
@@ -184,6 +183,8 @@ public class Controller {
 		errorRegisterCourse.setText("");
 		errorSearchStudent.setText("");
 		errorRegisterStudent.setText("");
+		
+		Student stud = studentRegister.findStudentByID(studentID.getText());
 
 		if(ifAnyFieldRegisterStudentEmpty()) {
 			errorRegisterStudent.setText("Fyll alle felter");
@@ -197,10 +198,12 @@ public class Controller {
 			errorRegisterStudent.setText("Skriv inn et gyldig etternavn, kun bokstaver");
 			return;
 			//throw new IllegalArgumentException("Tast inn et gyldig etternavn, kun bokstaver");
-		}else if(!isValidStudentID()) {
-			errorRegisterStudent.setText("Student ID består av 4 siffer");
+		}else if(!isValidSearchStudentID()) {
+			errorRegisterStudent.setText("Student ID skal bestå av 4 siffer");
 			return;
-			//throw new IllegalArgumentException("Student ID består av 4 siffer");
+			//throw new IllegalArgumentException("Student ID består av 4 siffer");	
+		}else if(stud != null) {
+				errorRegisterStudent.setText("StudentID er allerede registrert,\nvennligst logg inn");
 		}else {
 			
 		studentRegister.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
@@ -243,7 +246,7 @@ public class Controller {
 		//	throw new IllegalStateException("Tast inn din Student ID");
 		}
 		else if(!isValidStudentID()) {
-			errorSearchStudent.setText("Student ID består av 4 siffer");
+			errorSearchStudent.setText("Student ID skal bestå av 4 siffer");
 		//	throw new IllegalArgumentException("Student ID består av 4 siffer");
 		} else {
 		
@@ -484,8 +487,15 @@ public class Controller {
 		return true;
 	}
 	
+	private boolean isValidSearchStudentID() {
+		if ((!studentID.getText().matches("^[0-9]*$")) || studentID.getText().length() != 4) {
+			return false; 
+			}
+		return true;
+	}
+	
 	private boolean isValidCourseID() {
-		if ((!courseID.getText().matches("^[0-9]+$")) || (!courseID.getText().matches("^[a-zA-Z]+$"))) {
+		if ((!courseID.getText().matches("^[0-9]*$")) || (!courseID.getText().matches("^[a-zA-Z]*$"))) {
 			return false;
 		}
 		return true;
