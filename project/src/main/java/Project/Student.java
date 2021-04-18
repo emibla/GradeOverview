@@ -17,7 +17,7 @@ public class Student {
 	
 	private String firstName;
 	private String lastName;
-	private final String studentID;
+	private final String STUDENT_ID;
 	
 	//Arraylist med alle emner hver enkelt student har
 	private ArrayList<Course> studentCourses;
@@ -32,7 +32,7 @@ public class Student {
 	public Student(String firstName, String lastName, String studentID) { 
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.studentID = studentID;
+		this.STUDENT_ID = studentID;
 		//Lager en ArrayList studentCourses
 		this.studentCourses = new ArrayList<Course>();	
 	}
@@ -200,27 +200,20 @@ public class Student {
 	}
 	
 	public String getStudentID() {
-		return studentID;
+		return STUDENT_ID;
 	}
 	
-	public String setFirstName() {
-		return firstName;
-	}
-	
-	public String setLastName() {
-		return lastName;
-	}
 	
 	@Override
 	public String toString() {
-		return firstName + "," + lastName + "," + studentID;
+		return firstName + "," + lastName + "," + STUDENT_ID;
 	}
 	
 	public String coursesString() {
 		String string = "";
 		for(int i = 0; i < studentCourses.size(); i++) {
 			Course c = studentCourses.get(i);
-			string += c.getCourseID() + ","+c.getSemester()+","+c.getYear()+","+c.getGrade() +";";
+			string += c.getCourseID() + ","+c.getSemester()+","+c.getYear()+","+c.getGrade() +",";
 		}
 		return string;
 	}
@@ -228,7 +221,7 @@ public class Student {
 	public String toFullString() {
 	
 		
-		return firstName + "," + lastName + "," + studentID +";"+ coursesString();
+		return firstName + "," + lastName + "," + STUDENT_ID +";"+ coursesString();
 	}
 	
 	

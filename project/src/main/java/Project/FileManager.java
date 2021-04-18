@@ -45,19 +45,27 @@ public class FileManager implements FileInterface{
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				String[] lineInfo = line.split(",");
-				String[] courseLineInfo = line.split(";");
-				System.out.println(line);
+				String[] splitInfo = line.split(";");
+				//System.out.println(splitInfo[1]);
+				//splitter course på ,
+				String[] courseLineInfo = splitInfo[1].split(",");
+				//System.out.println(line);
 				//ArrayList courseItems = new ArrayList();
 				//courseItems.add(courseLineInfo);
 				String firstName = lineInfo[0];
 				String lastName = lineInfo[1];
 				String studentID = lineInfo[2];
 				Student student = new Student(firstName, lastName, studentID);
+				System.out.println("");
+				for(int i =0; i< courseLineInfo.length; i++) {
+					System.out.print(courseLineInfo[i]);
+				}
+				System.out.println("");
 				if(courseLineInfo.length > 0) {
-					for(int i = 1; i < courseLineInfo.length; i++) {
-						student.addCourse(new Course(courseLineInfo[0], courseLineInfo[1], Integer.parseInt(courseLineInfo[2]),courseLineInfo[3]));
-					}
-						
+					for(int i = 0; i < courseLineInfo.length; i++) {
+							student.addCourse(new Course(courseLineInfo[0], courseLineInfo[1], Integer.parseInt(courseLineInfo[2]),courseLineInfo[3]) );
+					
+					}	
 						
 				}
 				
@@ -93,6 +101,8 @@ public class FileManager implements FileInterface{
 		Student stud = testList.findStudentByID("8282");
 		stud.addCourse(new Course("TDT4100", "Vår", 2021, "A"));
 		stud.addCourse(new Course("Matte","Høst",2020,"B"));
+		Student stud2 = testList.findStudentByID("6786");
+		stud2.addCourse(new Course("Matte","Høst",2020,"B"));
 		
 		
 		FileManager manager = new FileManager();
