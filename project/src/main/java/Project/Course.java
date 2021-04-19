@@ -51,11 +51,15 @@ public class Course {
 		this.semester = semester;
 	}
 	
-	public void setYear(int year) {
-//		if (year < 1900	|| year > 2100){
-//			throw new IllegalArgumentException("Ugyldig år");
-//		}	
-		this.year = year;
+	public void setYear(int year) {		
+		if (isValidYear(year)) {
+			this.year = year;
+		}
+	}
+	
+	private boolean isValidYear(int year) {
+		return (year < 1900 || year > 2100);
+		
 	}
 	
 	
