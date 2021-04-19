@@ -312,8 +312,6 @@ public class Controller {
 		//	System.out.println("HER??"+n.getMessage());
 		}
 		
-		
-		//HVOR sjekker den om den eksisterer fra før???
 		//Sjekker om courseID er lagt til fra før. Hvis karakteren har en høyere verdi, erstattes den
 		if(stud.findCourseByID(cId) != null && (newGradeAsInt > oldGradeAsInt)) {
 			System.out.println(cour.toString());
@@ -411,6 +409,9 @@ public class Controller {
 		} catch(IllegalStateException e){
 			errorCalc.setText("Logg inn først!");
 		}
+		catch(NullPointerException n){
+			errorCalc.setText(n.getMessage());
+		}
 	}
 	
 	
@@ -426,12 +427,15 @@ public class Controller {
 		
 		try {
 		Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
-		stud.medianGrade(loggedInStudentID.getText());
+		//stud.medianGrade(loggedInStudentID.getText());
 		medianLabel.setText("Medianen til ditt karaktersnitt er: " + stud.medianGrade(loggedInStudentID.getText()));
 		} 
 		catch(IllegalStateException e){
-			errorCalc.setText("Logg inn først!");
-		}				
+			errorCalc.setText(e.getMessage());
+		}
+		catch(NullPointerException n){
+			errorCalc.setText(n.getMessage());
+		}
 	}
 	
 	
@@ -510,7 +514,7 @@ public class Controller {
 		return true;
 	}
 	
-	
+		
 	/*
 	 * Returns True if format is first name of String, last name of String, and StudentID is of 4 digits
 	 

@@ -2,10 +2,12 @@ package Project;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 //import java.util.List;
 //
 //import javafx.scene.control.TableColumn;
+import java.util.List;
 
 /* 
  * KLasse som oppretter en student og sier hvilke attributter studenten skal ha, håndterer coursene til hver student
@@ -81,8 +83,6 @@ public class Student {
 			return 1;
 		}
 	}
-	
-	
 /*	
 	public void setAverage() {
 		
@@ -98,11 +98,7 @@ public class Student {
 			errorCalc.setText("Logg inn først!");
 		}
 	}
-*/	
-	
-	
-	
-		
+*/		
 	/*
 	 * Calculates the average of grades
 	 */
@@ -112,9 +108,13 @@ public class Student {
 		double num = 0;
 		String avg = "";
 		double average = 0;
-		//for (int s = 0; s < students.size(); s++) {
 		
-			//if(students.get(s).getStudentID().equals(studentID)){
+		if (studentID == null) {
+			throw new IllegalStateException("Logg inn først");
+		} else if(studentCourses.size() == 0) {
+			throw new NullPointerException("Du har ingen kurs");	
+		}
+		else {
 				for (int i = 0; i < studentCourses.size(); i++) {
 					if (studentCourses.get(i).getGrade().equals("A")) {
 						sum += 5;
@@ -136,48 +136,46 @@ public class Student {
 				avg = String.valueOf(average);
 		}
 		return avg;
-	}
+	}}
 	
 	/*
 	 * Calculates the median of grades
 	 */
 	 
 	public String medianGrade (String studentID) {	
-		ArrayList<Integer> medianCourse = new ArrayList<Integer>();
+		List<Integer> medianCourse = new ArrayList<Integer>();
 		double middle = 0;
 		String stringMedian = ""; 
-		//int num = 0;
 			if (studentID == null) {
 				throw new IllegalStateException("Logg inn først");
-			} 
+			} else if(studentCourses.size() == 0) {
+				throw new NullPointerException("Du har ingen kurs");
+			}
+			else{
 				for (int i = 0; i < studentCourses.size(); i++) {
 					if (studentCourses.get(i).getGrade().equals("A")) {
 						medianCourse.add(5);
-						//num += 1;
 					} else if (studentCourses.get(i).getGrade().equals("B")) {
 						medianCourse.add(4);
-						//num += 1;
 					} else if (studentCourses.get(i).getGrade().equals("C")) {
 						medianCourse.add(3);
-						//num += 1;
 					} else if (studentCourses.get(i).getGrade().equals("D")) {
 						medianCourse.add(2);
-						//num += 1;			s
 					} else if (studentCourses.get(i).getGrade().equals("E")) {
 						medianCourse.add(1);
-						//num += 1;
+					}
 				}
-				Collections.sort(medianCourse);
-				if (medianCourse.size()%2 == 1) {
-					middle = (medianCourse.get(medianCourse.size()/2) + medianCourse.get((medianCourse.size()/2)-1) )/2;
-				} else{
-					middle = (medianCourse.get(medianCourse.size()/2));
-				}
-				
-				stringMedian = String.valueOf(middle);
-				
-		}
-		return stringMedian;
+				Collections.sort(medianCourse);	
+				if (medianCourse.size() == 1) {
+					middle = medianCourse.get(0);
+				}else if(medianCourse.size()%2 == 1) {//oddetall
+					middle = (medianCourse.get((medianCourse.size()-1) /2));
+				} else{ //partall;
+					middle = (((double)medianCourse.get(medianCourse.size()/2)) + ((double)medianCourse.get(medianCourse.size()/2-1))) /2;
+				}				
+				stringMedian = String.valueOf(middle);		
+				return stringMedian;
+			}
 	}
 	
 	//må ha en nullsjekk hver gang brukes pga return null, se 
