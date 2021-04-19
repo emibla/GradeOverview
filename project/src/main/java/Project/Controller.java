@@ -108,7 +108,6 @@ public class Controller{
 	//courseTable.getItems().addAll(studentRegister.getCourses());
 	}
 	
-	
 	@FXML
 	private void initialize() {
 		
@@ -499,11 +498,11 @@ public class Controller{
 	 */
 	
 	private boolean isValidFirstName() {
-		return (!firstName.getText().matches("^[a-zA-Z]*$"));
+		return (!firstName.getText().matches("^[a-zA-Z\s]*$"));
 	}
 		
 	private boolean isValidLastName() {
-		return (!lastName.getText().matches("^[a-zA-Z]*$"));
+		return (!lastName.getText().matches("^[a-zA-Z\s]*$"));
 	}
 	
 	
@@ -602,29 +601,4 @@ private boolean isValidCourseID() {
 		}
 	}
 
-
-
-
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
 */
