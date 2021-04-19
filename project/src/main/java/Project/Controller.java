@@ -27,7 +27,7 @@ import javafx.scene.control.TableView;
  * Controllerclass for App GradeOverview
  * 
  */
-public class Controller {
+public class Controller{
 
 	/**
 	 * Connecting FXML components to Controller class
@@ -80,6 +80,8 @@ public class Controller {
 	 */
 	StudentRegister studentRegister = new StudentRegister();
 	
+	FileManager fileManager = new FileManager();
+	
 	
 //	Prøvd å lage en getter for label
 	String something;
@@ -110,10 +112,6 @@ public class Controller {
 	@FXML
 	private void initialize() {
 		
-		fillWithTestData(); //Fill register with testdata
-		
-		try {
-
 			// oppretter kolonner i tableView
 			TableColumn<Course, String> courseIDcol = new TableColumn<>("Emnekode");
 			courseIDcol.setCellValueFactory(new PropertyValueFactory<>("courseID"));
@@ -134,16 +132,44 @@ public class Controller {
 			List<Student> students = studentRegister.getStudents();
 			System.out.println(students);
 			
-
-		} catch (NullPointerException n) {
-			System.out.println(n.getMessage());
-		}
+			
+			try {
+				fileManager.readStudentsFromFile(studentRegister, "RegisterFil");
+				
+			}catch (Exception e){
+				System.out.print(e.getMessage());
+	}
+		
+			
+			
+			
+			
+		
+//		} catch (NullPointerException n) {
+//			System.out.println(n.getMessage());
+//		}
+		
+//		try {
+//
+//			studentRegister.writeStudentRegister("StudentRegister");
+//		}catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+		
 		
 		//registerStudentButton.setOnAction(actionEvent -> addStudent());
 		
 		//Test. Printer ut studentene i konsollen
 		System.out.println(studentRegister.toString());
 	}	//initialize end
+	
+	private void updateFile() {
+		try {
+			fileManager.writeStudentRegister(studentRegister, "RegisterFil");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 	
 	
 	
@@ -208,6 +234,7 @@ public class Controller {
 			
 		studentRegister.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
 		errorRegisterStudent.setText("Registrert! Logg inn for å registrere emner");
+		updateFile();
 		}
 
 		//try {
@@ -328,7 +355,9 @@ public class Controller {
 		//Oppdaterer tabellen og getter alle course som ligger i testList på nytt for å unngå duplisering i tabellen
 		courseTable.getItems().clear();
 		courseTable.getItems().addAll(stud.getCourses());
-		}}
+		}
+		updateFile();	
+	}
 	
 	/*
 	 * Collects the semester from ToggleButton
