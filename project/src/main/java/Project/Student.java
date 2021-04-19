@@ -188,7 +188,6 @@ public class Student {
 		return null;
 	}
 
-	
 	public String getFirstName() {
 		return firstName;
 	}
