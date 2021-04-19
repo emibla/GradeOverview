@@ -218,7 +218,7 @@ public class Student {
 	public String toFullString() {
 	
 		
-		return firstName + "," + lastName + "," + STUDENT_ID +";"+ coursesString();
+		return firstName + "," + lastName + "," + STUDENT_ID +",;"+coursesString();
 	}
 	
 	
