@@ -1,16 +1,15 @@
 package Project;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
-//import java.util.List;
-//
-//import javafx.scene.control.TableColumn;
 import java.util.List;
 
 /* 
  * KLasse som oppretter en student og sier hvilke attributter studenten skal ha, håndterer coursene til hver student
+ * Course registeret ligger her
  */
 
 // SPM TIL STUDASS: Kan man lage et student objekt hvis konstruktøren er private
@@ -20,9 +19,9 @@ public class Student {
 	private String firstName;
 	private String lastName;
 	private final String STUDENT_ID;
-	
-	//Arraylist med alle emner hver enkelt student har
 	private ArrayList<Course> studentCourses;
+	
+	private static List<String> validGrade = Arrays.asList("A", "B", "C", "D", "E");
 	
 	/**
 	 * 
@@ -35,14 +34,23 @@ public class Student {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.STUDENT_ID = studentID;
-		//Lager en ArrayList studentCourses
 		this.studentCourses = new ArrayList<Course>();	
 	}
 	
 	//Legger til Course i studentCourses under Student
-	public void addCourse(Course course) {
-		this.studentCourses.add(course);
-	}
+	public void addCourse(String courseID, String semester, int year, String grade) {
+		if(!isValidCourseID(courseID)){
+			throw new IllegalArgumentException("Emnenavn starter med bokstaver\nog kan inneholde tall");
+		} else if(!isValidYear(year)) {
+			throw new IllegalArgumentException("Tast inn et år mellom 1900 og 2100");
+		} else if(!isValidSemester(semester)) {
+			throw new IllegalArgumentException("Skriv inn semesteret du tok emnet");
+		} else if(!validGrade.contains(grade)){
+			throw new IllegalArgumentException("Kun beståtte karakterer A-E er gyldige");
+		} else {
+			Course cour = new Course(courseID, semester, year, grade);
+		this.studentCourses.add(cour);
+	}}
 	
 	//henter ut course fra ArrayListen studentCourses
 	public ArrayList<Course> getCourses(){
@@ -57,7 +65,6 @@ public class Student {
 			if(nCourse.getCourseID().equals(courseID)) {
 				iterator.remove();
 				studentCourses.remove(nCourse);
-				
 			}
 		}
 	}
@@ -83,22 +90,7 @@ public class Student {
 			return 1;
 		}
 	}
-/*	
-	public void setAverage() {
 		
-		if (loggedIn.isEmpty()) {
-			errorCalc.setText("Logg inn først");
-			return;
-		}
-		try {
-		Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
-		stud.averageGrade(loggedInStudentID.getText());
-		averageLabel.setText("Ditt karaktersnitt er: " + stud.averageGrade(loggedInStudentID.getText()));
-		} catch(IllegalStateException e){
-			errorCalc.setText("Logg inn først!");
-		}
-	}
-*/		
 	/*
 	 * Calculates the average of grades
 	 */
@@ -133,7 +125,8 @@ public class Student {
 						num += 1;
 				}
 				average = sum/num;
-				avg = String.valueOf(average);
+				DecimalFormat df2 = new DecimalFormat("#.##");
+				avg = df2.format(average);
 		}
 		return avg;
 	}}
@@ -178,14 +171,14 @@ public class Student {
 			}
 	}
 	
-	//må ha en nullsjekk hver gang brukes pga return null, se 
+
 	public Course findCourseByID(String courseID) {
+		Course cour = null;
 		for(int i = 0; i < studentCourses.size(); i++) {
 			if(getCourses().get(i).getCourseID().equals(courseID)) {
-				return getCourses().get(i);
+				cour = getCourses().get(i);
 			}
-		}
-		return null;
+		}return cour;
 	}
 
 	public String getFirstName() {
@@ -221,5 +214,25 @@ public class Student {
 		return firstName + "," + lastName + "," + STUDENT_ID +",;"+coursesString();
 	}
 	
+	private boolean isValidCourseID (String courseID){
+		if ((!courseID.matches("^[a-zA-Z][0-9a-zA-Z]*$") || courseID.isBlank() )){
+			return false;
+		}
+		return true;
+	}
 	
-}
+	private boolean isValidYear(int year) {
+		if (year < 1900 || year > 2100) {
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean isValidSemester(String semester) {
+		if (semester.equalsIgnoreCase("Høst") || semester.equalsIgnoreCase("Vår")) {
+			return true;
+		} else {
+		return false;
+	}
+	}
+	}
