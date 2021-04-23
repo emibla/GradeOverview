@@ -36,36 +36,9 @@ public class Course {
 		return grade;
 	}
 	
-	public void setCourseID(String courseID) {
-		this.courseID = courseID;
-	}
-	
-	public void setGrade(String grade) {
-		this.grade = grade;
-	}
-	
-	public void setSemester(String semester) {
-//		if (semester != 'H' && semester != 'V' &&  semester != 'S') {
-//		throw new IllegalArgumentException("Ugyldig semester");
-//		}
-		this.semester = semester;
-	}
-	
-	public void setYear(int year) {		
-		if (isValidYear(year)) {
-			this.year = year;
-		}
-	}
-	
-	private boolean isValidYear(int year) {
-		return (year < 1900 || year > 2100);
-		
-	}
-	
-	
 	@Override
 	public String toString() {
-		return "CourseID: " + courseID + " semester: " + semester + " Year: " + year + " Grade: " + grade;
+		return "CourseID: " + courseID + " Semester: " + semester + " Year: " + year + " Grade: " + grade;
 	
 	}
 	
