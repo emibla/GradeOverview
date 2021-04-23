@@ -1,11 +1,7 @@
 package Project;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javafx.scene.control.TableColumn;
 
 public class StudentRegister{
 	
@@ -14,14 +10,10 @@ public class StudentRegister{
 	 * Liste med emner
 	 * Registrer student
 	 * Registrere et emne
-	 * Skrive til fil
-	 * Lese fra fil
 	 */
 	
 	
 	public List<Student> students = new ArrayList<Student>();
-	//public ArrayList<Course> courses = new ArrayList<Course>();
-	
 	
 	public List<Student> getStudents() {
 		return this.students;
@@ -30,90 +22,51 @@ public class StudentRegister{
 	//Opprett ny student
 	//hvis sann, returner true (ny student), hvis ikke returnerer komplett eller finnes fra før
 	public Student registerNewStudent(String firstName, String lastName, String studentID) {
+		if(!isValidFirstName(firstName)) {
+			throw new IllegalArgumentException("Ugyldig fornavn");
+		} else if (!isValidLastName(lastName)) {
+			throw new IllegalArgumentException("Ugyldig etternavn");
+		} else if(!isValidStudentID(studentID)) {
+			throw new IllegalArgumentException("Ugyldig studentID");
+//		} else if(firstName == null || firstName.isBlank() || lastName== null || lastName.isBlank() || studentID == null || studentID.isBlank()) {
+//			throw new NullPointerException("Ingen felter kan være tomme");		
+		} else if(students.stream().anyMatch(c -> c.getStudentID().equals(studentID))) {
+			throw new IllegalArgumentException("StudentID er allerede registrert,\nvennligst logg inn");
+		} else {
 		Student newStudent = new Student(firstName, lastName, studentID);
 		this.students.add(newStudent);
 		return newStudent;
-	}
+	}}
 	
 	
 	/**
 	 * Method to find student by studentID
-	 * @param studentID 
+	 * @param studentID s
 	 * @return returns a student  if found, else returns null
 	 */
 	
 	//må ha en nullsjekk hver gang brukes pga return null, se 
 	public Student findStudentByID(String studentID) {
+		Student stud = null;
 		for(int i = 0; i < students.size(); i++) {
 			if(getStudents().get(i).getStudentID().equals(studentID)) {
-				return getStudents().get(i);
+				stud = getStudents().get(i);	
 			}
 		}
-		return null;
+		return stud;
 	}
-}
-
-
-
-
-/*
-*******************************************************************************************************************************
-/*
- * Opprett nytt emne
- */
-/*
-public Course registerNewCourse(String courseID, String semester, String year, String grade) {
-	Course newCourse = new Course(courseID, semester, year, grade);	
-	this.courses.add(newCourse);
-	return newCourse;		
-}
-
-	//public ArrayList<Course> getCourses() {
-	//	return this.courses;
-	//}
 	
-	/*
-	public List<Course> getCoursesByID(String courseID){
-		(match = courses.stream()
-				.filter(course -> course.getCourseID() == courseID)
-				.orElse(null);
-		if (match !=null) {
-			return match;
-		} else {
-			return null;
-		}
+	private boolean isValidFirstName(String firstName) {
+		return (firstName.matches("^[a-zA-Z\s]*$") && !firstName.isBlank());
 	}
-
-	/**
-	 * 
-	 * @param studentID
-	 * @param course
+	private boolean isValidLastName(String lastName) {
+		return (lastName.matches("^[a-zA-Z\s]*$") && !lastName.isBlank());
+	}
 	
-	public void addCourseToStudent(String studentID, Course course) {
-		 ArrayList<Course> studentCourses;
-		for(int i = 0; i < students.size(); i++) {
-			if(getStudents().get(i).getStudentID().equals(studentID)) {
-				//this.students.registerNewCourse(course);
-	
-				
+	private boolean isValidStudentID(String studentID) {
+		if ((!studentID.matches("^[0-9]*$") || studentID.length() != 4)) {
+			return false; 
 			}
-		}
+		return true;
 	}
-	
-	 */
-/*
-public boolean findCourseByID(String studentID, String courseID) {
-	boolean ifSuccess = false;
-	for(int i = 0; i < students.size(); i++ ) {
-		if(students.get(i).getStudentID().equals(studentID)) {
-			for(int b = 0; b < courses.size(); b++) {
-				if(getCourses().get(b).getCourseID().equals(courseID)) {
-					ifSuccess = true;
-				}
-		}
-	}
-		
-	}
-	return ifSuccess;
-	
-}*/
+}
