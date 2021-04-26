@@ -1,8 +1,6 @@
 package Project;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,11 +9,9 @@ public class StudentRegisterTest {
 	StudentRegister studentRegister = new StudentRegister();
 	
 	@BeforeEach
-	public void setup() {
+	public void setUp() {
 		studentRegister.registerNewStudent("Mikkel", "Rev", "1234");
-		studentRegister.registerNewStudent("Donald", "Trump", "1111");
 	}
-
 	
 	/**
 	 * Positive test 
@@ -23,9 +19,8 @@ public class StudentRegisterTest {
 	 */
 	@Test
 	public void testRegisterNewStudent() {
-		//StudentRegister studentRegister = new StudentRegister();
-		studentRegister.registerNewStudent("Lilly", "Pop", "1000");
-		assertEquals(3, studentRegister.getStudents().size());
+		studentRegister.registerNewStudent("Lilly", "Potter", "1000");
+		assertEquals(2, studentRegister.getStudents().size());
 	}
 	
 	@Test
@@ -70,11 +65,10 @@ public class StudentRegisterTest {
 	}
 	
 	@Test
-	public void testRegisterStudentAlreadyExist() {
+	public void testRegisterStudentIdAlreadyExist() {
 		assertThrows(IllegalArgumentException.class,
 				() -> {studentRegister.registerNewStudent("Snømannen", "Kalle", "1234");} );
 	}
-	
 	
 	@Test
 	public void testFindStudentByID() {
