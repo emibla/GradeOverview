@@ -13,47 +13,43 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-
 /**
  * 
- * @author eblakseth
- * Controllerclass for App GradeOverview
+ * @author eblakseth Controllerclass for App GradeOverview
  * 
  */
-public class Controller{
+public class Controller {
 
 	/**
 	 * Connecting FXML components to Controller class
 	 */
-	
+
 	// Register new Student
 	@FXML
 	private TextField firstName, lastName, studentID;
-	@FXML 
+	@FXML
 	private Button registerStudentButton;
 
 	// Search for Student
 	@FXML
 	private TextField searchStudentID;
-    @FXML 
-    private Button searchStudentButton;
+	@FXML
+	private Button searchStudentButton;
 
 	// Add course
 	@FXML
 	private TextField registerCourseID, courseYear;
 	@FXML
 	private ToggleButton gradeA, gradeB, gradeC, gradeD, gradeE, semesterAutumn, semesterSpring;
-	@FXML 
+	@FXML
 	private ToggleGroup semesterToggle, gradeToggle;
-    @FXML
-    private Button registerCourseButton;
-
+	@FXML
+	private Button registerCourseButton;
 
 	// Error labels
 	@FXML
 	private Label errorRegisterStudent, errorSearchStudent, errorRegisterCourse, errorCalc;
-	
-	
+
 	// Logged in Labels
 	@FXML
 	private Label loggedInStudentName, loggedInStudentID;
@@ -63,63 +59,60 @@ public class Controller{
 	private TableView<Course> courseTable;
 	@FXML
 	private TableColumn<Course, String> courseID, grade, semester, year;
-	
+
 	// Calculating
 	@FXML
 	private Label averageLabel, medianLabel;
 
-	/**
+	/*
 	 * initializing a new StudentRegister
 	 */
 	StudentRegister studentRegister = new StudentRegister();
 	
-	FileManager fileManager = new FileManager();
-	
-
-	/**
-	 * Method to fill register with testdata
+	/*
+	 * Initializing Filemanager
 	 */
-	
-	public void fillWithTestData() {
-	studentRegister.registerNewStudent("Emily", "Test", "1234");
-	studentRegister.registerNewStudent("Mari", "Test", "2345");
-	studentRegister.registerNewStudent("Kine", "Test", "1234");
-	//studentRegister.registerNewStudent("Bokstav", "Test", "wwww");
-	//studentRegister.findStudentByID("1234").addCourse("TDT4245", "Vår", 2020, "B");
 
-	}
-	
+	FileManager fileManager = new FileManager();
+
 	@FXML
 	private void initialize() {
 		
-		//fillWithTestData();
+		// fillWithTestData(); //method to add test data to studentRegister
 		
-			// oppretter kolonner i tableView
-			TableColumn<Course, String> courseIDcol = new TableColumn<>("Emnekode");
-			courseIDcol.setCellValueFactory(new PropertyValueFactory<>("courseID"));
-			courseTable.getColumns().add(courseIDcol);
 
-			TableColumn<Course, String> gradeCol = new TableColumn<>("Karakter");
-			gradeCol.setCellValueFactory(new PropertyValueFactory<>("grade"));
-			courseTable.getColumns().add(gradeCol);
+		// Fill table with columns
+		TableColumn<Course, String> courseIDcol = new TableColumn<>("Emnekode");
+		courseIDcol.setCellValueFactory(new PropertyValueFactory<>("courseID"));
+		courseTable.getColumns().add(courseIDcol);
 
-			TableColumn<Course, String> semesterCol = new TableColumn<>("Semester");
-			semesterCol.setCellValueFactory(new PropertyValueFactory<>("semester"));
-			courseTable.getColumns().add(semesterCol);
+		TableColumn<Course, String> gradeCol = new TableColumn<>("Karakter");
+		gradeCol.setCellValueFactory(new PropertyValueFactory<>("grade"));
+		courseTable.getColumns().add(gradeCol);
 
-			TableColumn<Course, String> yearCol = new TableColumn<>("År");
-			yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
-			courseTable.getColumns().add(yearCol);
+		TableColumn<Course, String> semesterCol = new TableColumn<>("Semester");
+		semesterCol.setCellValueFactory(new PropertyValueFactory<>("semester"));
+		courseTable.getColumns().add(semesterCol);
+
+		TableColumn<Course, String> yearCol = new TableColumn<>("År");
+		yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
+		courseTable.getColumns().add(yearCol);
+
 		
-			try {
-				fileManager.readStudentsFromFile(studentRegister, "StudentRegister");
-				
-			}catch (FileNotFoundException f){
-				errorCalc.setText("Klarte ikke å lese fra fil");
-	}
+		// reads from StudentRegister file
+		try {
+			fileManager.readStudentsFromFile(studentRegister, "StudentRegister");
 
-	}	//initialize end
+		} catch (FileNotFoundException f) {
+			errorCalc.setText("Klarte ikke å lese fra fil");
+		}
+
+	} 
 	
+	/*
+	 * Method for updating StudentRegister file
+	 */
+
 	private void updateFile() {
 		try {
 			fileManager.writeStudentRegister(studentRegister, "StudentRegister");
@@ -128,226 +121,201 @@ public class Controller{
 		}
 	}
 	
-	private void loggedInStudentName() {
-		try {
-		Student stud = studentRegister.findStudentByID(searchStudentID.getText());
-		loggedInStudentName.setText(stud.getFirstName()+ " " + stud.getLastName());
-		} catch (NullPointerException e){
-		}
-		
-	}
-	
-	@FXML
-	private void loggedInStudentID() {
-		loggedInStudentID.setText(searchStudentID.getText());
-	}
-	
+
 	/*
-	 * Checks if valid info is inserted in Textfields and adds student to studentRegister
+	 * Checks if valid info is inserted to Textfields and adds student to studentRegister 
+	 * Catch IllegalArgumentException if unable to register
 	 */
-	
+
 	@FXML
 	public void addStudent() {
 		clearLabels();
 		Student stud = null;
-		
-		try {
+
 		stud = studentRegister.findStudentByID(studentID.getText());
-		} catch(NullPointerException e) {			
-		}
-		
-		if(ifAnyFieldRegisterStudentEmpty()) {
+
+		if (ifAnyFieldRegisterStudentEmpty()) {
 			errorRegisterStudent.setText("Fyll alle felter");
-		}else if(!isValidFirstName()) {
-			errorRegisterStudent.setText("Skriv inn et gyldig fornavn, kun bokstaver");
-		}else if(!isValidLastName()) {
-			errorRegisterStudent.setText("Skriv inn et gyldig etternavn, kun bokstaver");
-		}else if(!isValidSearchStudentID()) {
-			errorRegisterStudent.setText("Student ID skal bestå av 4 siffer");
-		}else if(stud != null) {
-				errorRegisterStudent.setText("StudentID er allerede registrert,\nvennligst logg inn");
-		}else {
-		
-		try {	
-		studentRegister.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
-		errorRegisterStudent.setText("Registrert! Logg inn for å registrere emner");
-		updateFile();
-		} catch(IllegalArgumentException e){ // | NullPointerException 
-			errorRegisterStudent.setText(e.getMessage());
-		}}		
-}	
+		} else if (stud != null) {
+			errorRegisterStudent.setText("StudentID er allerede registrert,\nvennligst logg inn");
+		} else {
+
+			try {
+				studentRegister.registerNewStudent(firstName.getText(), lastName.getText(), studentID.getText());
+				errorRegisterStudent.setText("Registrert! Logg inn for å registrere emner");
+				updateFile();
+			} catch (IllegalArgumentException e) {
+				errorRegisterStudent.setText(e.getMessage());
+			}
+		}
+	}
 	
+
 	/*
-	 * Search for student in students arraylist
+	 * Search for student in students list
 	 */
+	
 	@FXML
 	public void searchStudent() {
 		clearLabels();
+		loggedInStudentID.setText("");
+		loggedInStudentName.setText("");
 		
-		if(ifSearchFieldEmpty()) {
+
+		if (ifSearchFieldEmpty()) {
 			errorSearchStudent.setText("Tast inn din Student ID");
-		}
-		else if(!isValidStudentID()) {
+		} else if (!isValidStudentID()) {
 			errorSearchStudent.setText("Student ID skal bestå av 4 siffer");
 		} else {
-		
-		courseTable.getItems().clear();
-		String studentID = searchStudentID.getText();
-		Student stud = studentRegister.findStudentByID(studentID);
-		if(stud  == null) {
-			errorSearchStudent.setText("StudentID ble ikke funnet,\nvennligst registrer deg");
-		} else{
-			//stud = studentRegister.findStudentByID(studentID);
-			//Oppdaterer tabellen og getter alle course som ligger i studentRegister på nytt
-			courseTable.getItems().addAll(stud.getCourses());
-			loggedInStudentID();
-			loggedInStudentName();
-		}
+
+			courseTable.getItems().clear(); //clear table
+			String studentID = searchStudentID.getText();
+			Student stud = studentRegister.findStudentByID(studentID);
+			if (stud == null) {
+				errorSearchStudent.setText("StudentID ble ikke funnet,\nvennligst registrer deg");
+			} else {
+				courseTable.getItems().addAll(stud.getCourses());
+				loggedInStudentID.setText(searchStudentID.getText());
+				loggedInStudentName.setText(stud.getFirstName() + " " + stud.getLastName());
+			}
 		}
 	}
 	
-	//Metode for å hente ut informasjon fra registrering av course
+	
+	/*
+	 * Collects info from TextFields and Togglebuttons and uses it to add a new course
+	 * If adding a new course that already exist, checks if new grade is higher than already registered, if so replace old course
+	 * Catches IllegalArguemntException if unable to add Course and if so print message to label
+	 */
+
 	@FXML
 	public void addCourse() {
 		clearLabels();
-		
-		if(loggedInStudentID.getText().isEmpty()) {
+
+		if (loggedInStudentID.getText().isEmpty()) {
 			errorRegisterCourse.setText("Logg inn først");
-		}else if(ifAnyFieldEmpty()){
+		} else if (ifAnyFieldEmpty()) {
 			errorRegisterCourse.setText("Fyll alle felter");
-		} else if(!isValidCourseID()) {
-			errorRegisterCourse.setText("Fyll inn emnenavn med bokstaver\nførst og tall etterpå");
-		} else if(!isValidYear()) {
-			errorRegisterCourse.setText("Tast inn gyldig år");
 		} else {
 
-		String studentID = loggedInStudentID.getText();
-		Student stud = studentRegister.findStudentByID(studentID);
-		String cId = registerCourseID.getText();
-		String newGrade = getGrade();
-		int oldGradeAsInt =0;
-		int newGradeAsInt = Student.gradeAsInt(newGrade);
-		
-		if( stud.findCourseByID(cId) == null){
-			oldGradeAsInt = 0;
-		} else {
-			oldGradeAsInt = Student.gradeAsInt(studentRegister.findStudentByID(studentID).findCourseByID(cId).getGrade());
-		}
-		
-		//Sjekker om courseID er lagt til fra før. Hvis karakteren har en høyere verdi, erstattes den
-		if(stud.findCourseByID(cId) != null && (newGradeAsInt > oldGradeAsInt)) {
-				stud.removeCourse(registerCourseID.getText());
-					stud.addCourse(registerCourseID.getText(), getSemester(), Integer.parseInt(courseYear.getText()), getGrade());
-					courseTable.getItems().clear(); //Fjerner hele tabellen for å fjerne den gamle karakterern
-					courseTable.getItems().addAll(stud.getCourses()); //Laster inn alle karakterene på nytt i tabellen
-		} else if(stud.findCourseByID(cId) != null && (newGradeAsInt <= oldGradeAsInt)){
-			errorRegisterCourse.setText("Du har bedre karakter i dette emnet fra før");	
-		}else {
-		stud.addCourse(registerCourseID.getText(), getSemester(), Integer.parseInt(courseYear.getText()), getGrade());
-		}
-		
-		courseTable.getItems().clear();
-		courseTable.getItems().addAll(stud.getCourses());
-		updateFile();
+			String studentID = loggedInStudentID.getText();
+			Student stud = studentRegister.findStudentByID(studentID);
+			String cId = registerCourseID.getText();
+			String newGrade = getGrade();
+			int oldGradeAsInt = 0;
+			int newGradeAsInt = Student.gradeAsInt(newGrade);
+
+			if (stud.findCourseByID(cId) == null) { // checks if course is already registered
+				oldGradeAsInt = 0;
+			} else { //if so, set integer value to old grade
+				oldGradeAsInt = Student.gradeAsInt(studentRegister.findStudentByID(studentID).findCourseByID(cId).getGrade());
+			}
+
+			if (stud.findCourseByID(cId) != null && (newGradeAsInt > oldGradeAsInt)) { //if course exist and new grade value is higher than old value
+				stud.removeCourse(registerCourseID.getText()); //remove old course
+				try {
+					stud.addCourse(registerCourseID.getText(), getSemester(), Integer.parseInt(courseYear.getText()),getGrade());
+				} catch (IllegalArgumentException e) {
+					errorRegisterCourse.setText(e.getMessage());
+
+				}
+			} else if (stud.findCourseByID(cId) != null && (newGradeAsInt <= oldGradeAsInt)) { //if course exist and new grade is similar or lower
+				errorRegisterCourse.setText("Du har bedre karakter i dette emnet fra før"); 
+			} else {
+				try {
+					stud.addCourse(registerCourseID.getText(), getSemester(), Integer.parseInt(courseYear.getText()),getGrade());
+				} catch (IllegalArgumentException e) {
+					errorRegisterCourse.setText(e.getMessage());
+				}
+			}
+
+			courseTable.getItems().clear(); //clear old table
+			courseTable.getItems().addAll(stud.getCourses());
+			updateFile();
 		}
 	}
 	
+
+	@FXML
+	public void average() {
+		clearLabels();
+
+		if (loggedInStudentID.getText().isEmpty()) {
+			errorCalc.setText("Logg inn først");
+			return;
+		}
+		try {
+			Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
+			stud.averageGrade(loggedInStudentID.getText());
+			averageLabel.setText("Ditt karaktersnitt er: " + stud.averageGrade(loggedInStudentID.getText()));
+		} catch (IllegalStateException e) {
+			errorCalc.setText(e.getMessage());
+		}
+	}
+	
+
+	@FXML
+	public void median() {
+		clearLabels();
+
+		if (loggedInStudentID.getText().isEmpty()) {
+			errorCalc.setText("Logg inn først");
+			return;
+		}
+
+		try {
+			Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
+			medianLabel.setText("Medianen til ditt karaktersnitt er: " + stud.medianGrade(loggedInStudentID.getText()));
+		} catch (IllegalStateException e) {
+			errorCalc.setText(e.getMessage());
+		}
+	}
+	
+
 	/*
 	 * Collects the semester from ToggleButton
 	 */
-	
+
 	@FXML
 	private String getSemester() {
 		String sem = "";
-		
+
 		Toggle semesterTogger = semesterToggle.getSelectedToggle();
-		
+
 		if (semesterTogger == semesterAutumn) {
-			sem = "Høst";			
-		}
-		else if (semesterTogger == semesterSpring) {
+			sem = "Høst";
+		} else if (semesterTogger == semesterSpring) {
 			sem = "Vår";
-		} 
+		}
 		return sem;
 	}
-	
-	
+
 	/*
 	 * Collects the grade from ToggleButton
 	 */
-	
+
 	@FXML
 	private String getGrade() {
-	
-	String grad = "";
-	
-	Toggle gradeTogger = gradeToggle.getSelectedToggle();
-	
-	
-	if (gradeTogger == gradeA) {
-		grad = "A";			
-	}
-	else if (gradeTogger == gradeB) {
-		grad = "B";
-	}
-	else if (gradeTogger == gradeC) {
-		grad = "C";
-	}		
-	else if (gradeTogger == gradeD) {
-		grad = "D";
-	}
-	else if (gradeTogger == gradeE) {
-		grad = "E";
-	}		
-	return grad;
 
+		String grad = "";
+
+		Toggle gradeTogger = gradeToggle.getSelectedToggle();
+
+		if (gradeTogger == gradeA) {
+			grad = "A";
+		} else if (gradeTogger == gradeB) {
+			grad = "B";
+		} else if (gradeTogger == gradeC) {
+			grad = "C";
+		} else if (gradeTogger == gradeD) {
+			grad = "D";
+		} else if (gradeTogger == gradeE) {
+			grad = "E";
+		}
+		return grad;
 	}
-	
-	@FXML
-	public void average() {
-		errorCalc.setText("");
-		medianLabel.setText("");
-		
-		if (loggedInStudentID.getText().isEmpty()) {
-			errorCalc.setText("Logg inn først");
-			return;
-		}
-		try {
-		Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
-		stud.averageGrade(loggedInStudentID.getText());
-		averageLabel.setText("Ditt karaktersnitt er: " + stud.averageGrade(loggedInStudentID.getText()));
-		} catch(IllegalStateException e){
-			errorCalc.setText("Logg inn først!");
-		}
-		catch(NullPointerException n){
-			errorCalc.setText(n.getMessage());
-		}
-	}
-	
-	
-	@FXML
-	public void median() {
-		errorCalc.setText("");
-		averageLabel.setText("");
-		
-		if (loggedInStudentID.getText().isEmpty()) {
-			errorCalc.setText("Logg inn først");
-			return;
-		} 
-		
-		try {
-		Student stud = studentRegister.findStudentByID(loggedInStudentID.getText());
-		//stud.medianGrade(loggedInStudentID.getText());
-		medianLabel.setText("Medianen til ditt karaktersnitt er: " + stud.medianGrade(loggedInStudentID.getText()));
-		} 
-		catch(IllegalStateException e){
-			errorCalc.setText(e.getMessage());
-		}
-		catch(NullPointerException n){
-			errorCalc.setText(n.getMessage());
-		}
-	}
-	
+
+
 	private void clearLabels() {
 		errorRegisterCourse.setText("");
 		errorSearchStudent.setText("");
@@ -356,82 +324,58 @@ public class Controller{
 		averageLabel.setText("");
 		medianLabel.setText("");
 	}
-	
+
 	/*
-	 * Returns true if any registration for student Textfields is empty
+	 * Returns true if any Textfields of registering a student is empty
 	 */
-	
+
 	private boolean ifAnyFieldRegisterStudentEmpty() {
 		return firstName.getText().isEmpty() || lastName.getText().isEmpty() || studentID.getText().isEmpty();
 	}
-	
+
 	/*
 	 * Returns true if Textfield searchStudentID is empty
 	 */
-	
+
 	private boolean ifSearchFieldEmpty() {
 		return searchStudentID.getText().isEmpty();
 	}
-	
+
 	/*
-	 * Returns true if Textfield registerCourseID is empty, or either of ToggleButtons is not pressed
+	 * Returns true if Textfield registerCourseID is empty, or either of
+	 * ToggleButtons is not pressed
 	 */
-	
+
 	private boolean ifAnyFieldEmpty() {
-		return registerCourseID.getText().isEmpty() || courseYear.getText().isEmpty() || (!semesterAutumn.isSelected() && !semesterSpring.isSelected()) ||
-				(!gradeA.isSelected() && !gradeB.isSelected() && !gradeC.isSelected() && !gradeD.isSelected() &&  !gradeE.isSelected());
+		return registerCourseID.getText().isEmpty() || courseYear.getText().isEmpty()
+				|| (!semesterAutumn.isSelected() && !semesterSpring.isSelected())
+				|| (!gradeA.isSelected() && !gradeB.isSelected() && !gradeC.isSelected() && !gradeD.isSelected()
+						&& !gradeE.isSelected());
 	}
-	
-	/*
-	 * returns true if name is not a String
-	 */
-	
-	private boolean isValidFirstName() {
-		return (firstName.getText().matches("^[a-zA-Z\s]*$"));
-	}
-		
-	private boolean isValidLastName() {
-		return (lastName.getText().matches("^[a-zA-Z\s]*$"));
-	}
-	
-	
+
 	/*
 	 * Returns true if studentID is a number of 4 digits
-	 */ 
-	
+	 */
+
 	private boolean isValidStudentID() {
 		if ((!searchStudentID.getText().matches("^[0-9]*$")) || searchStudentID.getText().length() != 4) {
-			return false; 
-			}
-		return true;
-	}
-	
-	private boolean isValidSearchStudentID() {
-		if ((!studentID.getText().matches("^[0-9]*$")) || studentID.getText().length() != 4) {
-			return false; 
-			}
-		return true;
-	}
-	
-	private boolean isValidCourseID() {
-		if ((!registerCourseID.getText().matches("^[a-zA-Z][0-9a-zA-Z]*$"))){
 			return false;
 		}
 		return true;
 	}
+	
 	
 	/*
-	 * Returns true if Textfield courseYear is a year between 1900 and 2100
-	 */ 
-	
-	private boolean isValidYear() {
-		if (Integer.parseInt(courseYear.getText()) < 1900 || Integer.parseInt(courseYear.getText()) > 2100) {
-			return false;
-		}
-		return true;
-	}
-}
+	 * Method to fill register with testdata
+	 */
 
- // en blokk med kode: cmd + 7
- // || = opt + 7
- // \ optn + shift + 7 
+	/*
+	private void fillWithTestData() {
+		studentRegister.registerNewStudent("Emily", "Test", "1234");
+		studentRegister.registerNewStudent("Mari", "Test", "2345");
+		studentRegister.registerNewStudent("Kine", "Test", "1234");
+		 studentRegister.registerNewStudent("Bokstav", "Test", "wwww");
+		 studentRegister.findStudentByID("1234").addCourse("TDT4245", "Vår", 2020, "B");
+	}
+	*/
+}
