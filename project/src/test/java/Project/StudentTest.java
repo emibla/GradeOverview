@@ -1,11 +1,8 @@
 package Project;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-
 
 public class StudentTest {
 
@@ -23,6 +20,7 @@ public class StudentTest {
 		studentRegister.findStudentByID("1100").addCourse("TMA4245", "Høst", 2020, "D");
 	}
 	
+	
 	@Test
 	public void testGetStudentID() {
 		assertEquals("0001", studentRegister.findStudentByID("0001").getStudentID());
@@ -38,11 +36,17 @@ public class StudentTest {
 		assertEquals("Grang", studentRegister.findStudentByID("0001").getLastName());
 	}
 	
+
+	
 	@Test
 	public void testAddCourse () {
 		studentRegister.findStudentByID("1100").addCourse("ITGK", "Høst", 2020, "A");
 		assertEquals("ITGK", studentRegister.findStudentByID("1100").findCourseByID("ITGK").getCourseID());
+		studentRegister.findStudentByID("3107").addCourse("TMA4100", "vår", 2020, "A");
+		assertEquals("vår", studentRegister.findStudentByID("3107").findCourseByID("TMA4100").getSemester());
 	}
+	
+
 	
 	@Test
 	public void testAddCourseBlank() {
@@ -53,6 +57,8 @@ public class StudentTest {
 		assertThrows(IllegalArgumentException.class,
 				() -> {studentRegister.findStudentByID("0001").addCourse("TDT4245", "Vår", 2021,"");} );
 	}
+	
+
 	
 	@Test
 	public void testAddCourseInvalidInput() {
@@ -66,15 +72,37 @@ public class StudentTest {
 				() -> {studentRegister.findStudentByID("0001").addCourse("TDT4245", "Vår", 2020,"J");} );
 	}
 	
+
+	
 	@Test
 	public void testFindCourseByID() {
 		assertEquals("CourseID: TDT4100 Semester: Vår Year: 2021 Grade: B", studentRegister.findStudentByID("1100").findCourseByID("TDT4100").toString());
 	}
 
+	
 	@Test
 	public void testRemoveCourse() {
 		studentRegister.findStudentByID("1100").removeCourse("TDT4100");
 		assertNull(studentRegister.findStudentByID("1100").findCourseByID("TDT4100"));
+	}
+	
+
+	@Test
+	public void testAverageGrade() {
+		assertEquals("3,67", studentRegister.findStudentByID("1100").averageGrade("1100"));
+	}
+	
+
+	@Test
+	public void testAverageGradeNotLoggedIn() {
+		assertThrows(IllegalStateException.class,
+				() -> {studentRegister.findStudentByID("3107").averageGrade(null);});
+	}
+	
+	@Test
+	public void testAverageGradeNull() {
+		assertThrows(IllegalStateException.class,
+				() -> {studentRegister.findStudentByID("3107").averageGrade("3107");});
 	}
 	
 	@Test
@@ -88,23 +116,6 @@ public class StudentTest {
 	}
 	
 	@Test
-	public void testAverageGrade() {
-		assertEquals("3,67", studentRegister.findStudentByID("1100").averageGrade("1100"));
-	}
-	
-	@Test
-	public void testAverageGradeNotLoggedIn() {
-		assertThrows(IllegalStateException.class,
-				() -> {studentRegister.findStudentByID("3107").averageGrade(null);});
-	}
-	
-	@Test
-	public void testAverageGradeNull() {
-		assertThrows(NullPointerException.class,
-				() -> {studentRegister.findStudentByID("3107").averageGrade("3107");});
-	}
-	
-	@Test
 	public void testMedianGradeNotLoggedIn() {
 		assertThrows(IllegalStateException.class,
 				() -> {studentRegister.findStudentByID("3107").medianGrade(null);});
@@ -112,14 +123,25 @@ public class StudentTest {
 	
 	@Test
 	public void testMedianGradeNull() {
-		assertThrows(NullPointerException.class,
+		assertThrows(IllegalStateException.class,
 				() -> {studentRegister.findStudentByID("3107").medianGrade("3107");});
 	}
 	
 	@Test
 	public void testGradeAsInt() {
+		assertEquals(5, Student.gradeAsInt("A"));
 		assertEquals(3, Student.gradeAsInt("C"));
+		assertEquals(1, Student.gradeAsInt("E"));
 	}
 
-	
+	@Test
+	public void testCoursesString() {
+		assertEquals("TDT4100,Vår,2021,A,TMA4100,Høst,2020,B,", studentRegister.findStudentByID("0001").coursesString());
+	}
+
+	@Test
+	public void testToFullString() {
+		assertEquals("Hermine,Grang,0001,;TDT4100,Vår,2021,A,TMA4100,Høst,2020,B,", studentRegister.findStudentByID("0001").toFullString());
+		
+	}
 }
