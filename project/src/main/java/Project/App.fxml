@@ -42,16 +42,16 @@
             <ToggleButton fx:id="gradeD" layoutX="113.0" layoutY="352.0" mnemonicParsing="false" text="D" toggleGroup="$gradeToggle" />
             <ToggleButton fx:id="gradeE" layoutX="144.0" layoutY="352.0" mnemonicParsing="false" text="E" toggleGroup="$gradeToggle" />
             <Label layoutX="20.0" layoutY="329.0" text="Resultat:" />
-            <Label fx:id="errorRegisterCourse" layoutX="20.0" layoutY="468.0" text="." textFill="#ff5050">
+            <Label fx:id="errorRegisterCourse" layoutX="20.0" layoutY="468.0" textFill="#ff5050">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label fx:id="errorRegisterStudent" layoutX="20.0" layoutY="129.0" text="." textFill="#ff5050">
+            <Label fx:id="errorRegisterStudent" layoutX="20.0" layoutY="129.0" textFill="#ff5050">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
-            <Label fx:id="errorSearchStudent" layoutX="20.0" layoutY="226.0" text="." textFill="#ff5050">
+            <Label fx:id="errorSearchStudent" layoutX="20.0" layoutY="226.0" textFill="#ff5050">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
@@ -79,7 +79,7 @@
             </Label>
             <TableView fx:id="courseTable" layoutX="42.0" layoutY="111.0" prefHeight="189.0" prefWidth="401.0">
             <placeholder>
-            <Label text="Logg inn med din studentID eller registrer deg" />
+            <Label text="Logg inn med din studentID og legg til dine karakterer!" />
             </placeholder>
             </TableView>
             <Button layoutX="42.0" layoutY="331.0" mnemonicParsing="false" onAction="#average" prefHeight="27.0" prefWidth="110.0" text="Karaktersnitt" />
@@ -87,7 +87,7 @@
             <Label fx:id="loggedInStudentID" layoutX="42.0" layoutY="73.0" />
             <Button layoutX="160.0" layoutY="331.0" mnemonicParsing="false" onAction="#median" prefHeight="27.0" prefWidth="145.0" text="Median karakterpoeng" />
             <Label fx:id="medianLabel" layoutX="156.0" layoutY="369.0" />
-            <Label fx:id="errorCalc" layoutX="42.0" layoutY="409.0" />
+            <Label fx:id="errorCalc" layoutX="44.0" layoutY="395.0" prefHeight="24.0" prefWidth="363.0" textFill="#ff5050" />
          </children>
       </AnchorPane>
    </center>
