@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 public class FileManager implements FileInterface{
 	
+	
 	/*
-	 * Reads from and writes to the school Register 
-	 * Courses and Students
+	 * Reads students from file
+	 * Adds students to studentRegister
+	 * Split student from courses by ;
 	 */
 		
 		public void readStudentsFromFile(StudentRegister studentregister, String filename) throws FileNotFoundException {
@@ -22,14 +24,21 @@ public class FileManager implements FileInterface{
 				String lastName = lineInfo[1];
 				String studentID = lineInfo[2];
 				studentregister.registerNewStudent(firstName, lastName, studentID);
-				if(splitInfo.length > 1) {
-					String[] courseLineInfo = splitInfo[1].split(",");
+				if(splitInfo.length > 1) { // if student has any courses
+					String[] courseLineInfo = splitInfo[1].split(","); // split course values by ,
 					for(int i =0; i< courseLineInfo.length;) {
 						studentregister.findStudentByID(studentID).addCourse(courseLineInfo[i], courseLineInfo[i+1],Integer.parseInt(courseLineInfo[i+2]) , courseLineInfo[i+3]);
-						i +=4;
+						i +=4; // add a new course after every 4 values
 			}}
 			} scanner.close();
 		}
+		
+		
+		
+		/*
+		 * Creates a new file if filename does not exist
+		 * Writes info from studentRegister into file
+		 */
 		
 		public void writeStudentRegister(StudentRegister studentRegister, String filename)  {
 			
@@ -48,128 +57,4 @@ public class FileManager implements FileInterface{
 		
 	
 }
-		/**
-		 * 
-		 * @param args
-		
-		public static void main(String[] args) {
-		//testList.registerNewStudent("Emily", "Blakseth", "6786");
-		testList.registerNewStudent("Espen", "Askeladd", "8282");
-		Student stud = testList.findStudentByID("8282");
-		stud.addCourse(new Course("TDT4100", "Vår", 2021, "A"));
-		stud.addCourse(new Course("Matte","Høst",2020,"B"));
-		stud.addCourse(new Course("imatt1002", "vår", 2021, "C"));
-		stud.addCourse(new Course("TFOR1002", "vår", 2021, "D"));
-		//Student stud2 = testList.findStudentByID("6786");
-		//stud2.addCourse(new Course("Matte","Høst",2020,"B"));
-		
-		
-		FileManager manager = new FileManager();
-		//manager.addStudent(new Student("Lorraine", "Oplenskedal", "0202"));
-		//manager.addStudent(new Student("Roald", "Blakseth", "2209"));
-		
-		manager.writeStudentRegister("Registerfil");
-		try{
-		manager.readStudentsFromFile("Registerfil");	
-		}catch(FileNotFoundException f) {
-			System.out.println(f.getMessage());
-		}
-	}
-}
-
-
- */
-		//manager.writeStudentsInRegister("studentRegister.txt");
-		//try {
-		//	manager.getStudentsFromRegister("studentRegister.txt");
-		//} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-		//	System.out.println("Filnavnet finnes ikke");
-		//}
-		//manager.writeStudentsInRegister("studentRegister.txt");
-
-		
-
 	
-	/**
-	 * 
-	
-	System.out.println(courseLineInfo[i]);
-	System.out.println(courseLineInfo[i+1]);
-	System.out.println(courseLineInfo[i+2]);
-	System.out.println(courseLineInfo[i+3]);
-	System.out.println(courseLineInfo[i+6]);
-	
-	int nr = 1;
-	String courseID = courseLineInfo[nr];
-	String sem = courseLineInfo[nr+1];
-	int year = Integer.parseInt(courseLineInfo[nr+2]);
-	String grade = courseLineInfo[nr+3];
-	//System.out.print(courseLineInfo[i]);
-	Course course = new Course(courseID,sem,year,grade);
-	afterList.findStudentByID(studentID).addCourse(course);
-	 */
-
-//System.out.println("");
-//if(courseLineInfo.length > 0) {
-//	for(int i = 0; i < courseLineInfo.length; i++) {
-//			student.addCourse(new Course(courseLineInfo[0], courseLineInfo[1], Integer.parseInt(courseLineInfo[2]),courseLineInfo[3]) );
-		
-//	}			
-//}
-//System.out.println(student);
-//this.addStudent(student);
-
-
-
-
-
-
-
-
-//private List<Student> allStudents = new ArrayList<Student>();
-////private List<Course> allCourses = new ArrayList<Course>();
-//
-//static StudentRegister testList = new StudentRegister();
-//
-//static StudentRegister afterList = new StudentRegister();
-//
-//
-//
-//public void addStudent(Student student) {
-//	allStudents.add(student);
-//	}
-
-
-/*
-public void writeStudentsInRegister(String filename) {
-	
-	try {
-		PrintWriter writer = new PrintWriter(filename+".txt");		
-		for (Student student: allStudents) {
-		writer.println(student.toFullString());
-	}
-		writer.flush();
-		writer.close();
-	} catch (FileNotFoundException e) {
-		System.out.println("tjohei"+e.getMessage());
-	}
-}
-
-
-
-
-//	for(int i = 0; i < afterList.students.size(); i++) {
-		//		System.out.println("heipådei"+afterList.getStudents().get(i).toFullString());
-			//}
-
-
-
-*/
-	
-	
-	
-//System.out.println(studentID);  ******* OG DEN ØANGE UNDER
-//afterList.findStudentByID(studentID).addCourse(new Course(courseLineInfo[i], courseLineInfo[i+1],Integer.parseInt(courseLineInfo[i+2]) , courseLineInfo[i+3]));
-//System.out.println(courseLineInfo[i]);
-
