@@ -2,72 +2,89 @@ package Project;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-/* 
- * KLasse som oppretter en student og sier hvilke attributter studenten skal ha, håndterer coursene til hver student
- * Course registeret ligger her
- */
-
-// SPM TIL STUDASS: Kan man lage et student objekt hvis konstruktøren er private
 
 public class Student {
 	
 	private String firstName;
 	private String lastName;
 	private final String STUDENT_ID;
-	private ArrayList<Course> studentCourses;
+	private List<Course> studentCourses;
 	
-	private static List<String> validGrade = Arrays.asList("A", "B", "C", "D", "E");
 	
-	/**
-	 * 
-	 * @param firstName
-	 * @param lastName
-	 * @param studentID
-	 * @param studentCourses 
+	/*
+	 * Checks if valid input is inserted, if so set values
+	 * Each student has a list of studentCourses, which is checked for valid input in own class Course
 	 */
+	
 	public Student(String firstName, String lastName, String studentID) { 
+		if(!isValidFirstName(firstName)) {
+			throw new IllegalArgumentException("Skriv inn et gyldig fornavn, kun bokstaver");
+		} else if (!isValidLastName(lastName)) {
+			throw new IllegalArgumentException("Skriv inn et gyldig etternavn, kun bokstaver");
+		} else if(!isValidStudentID(studentID)) {
+			throw new IllegalArgumentException("Student ID skal bestå av 4 siffer");
+		} else {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.STUDENT_ID = studentID;
-		this.studentCourses = new ArrayList<Course>();	
+		this.studentCourses = new ArrayList<Course>();
+	}
+}
+	
+	/*
+	 * Adds course to studentCourses
+	 * Throws IllegalArgumentException if not able to create new Course, validated in class Course
+	 */
+
+	public void addCourse(String courseID, String semester, int year, String grade) throws IllegalArgumentException {
+		Course cour = new Course(courseID, semester, year, grade);
+		this.studentCourses.add(cour);
 	}
 	
-	//Legger til Course i studentCourses under Student
-	public void addCourse(String courseID, String semester, int year, String grade) {
-		if(!isValidCourseID(courseID)){
-			throw new IllegalArgumentException("Emnenavn starter med bokstaver\nog kan inneholde tall");
-		} else if(!isValidYear(year)) {
-			throw new IllegalArgumentException("Tast inn et år mellom 1900 og 2100");
-		} else if(!isValidSemester(semester)) {
-			throw new IllegalArgumentException("Skriv inn semesteret du tok emnet");
-		} else if(!validGrade.contains(grade)){
-			throw new IllegalArgumentException("Kun beståtte karakterer A-E er gyldige");
-		} else {
-			Course cour = new Course(courseID, semester, year, grade);
-		this.studentCourses.add(cour);
-	}}
 	
-	//henter ut course fra ArrayListen studentCourses
-	public ArrayList<Course> getCourses(){
-		return this.studentCourses;
+	/*
+	 * Return a copy of studentCourses
+	 */
+	
+	public List<Course> getCourses(){
+		List<Course> studentCoursesCopy = new ArrayList<Course>();
+		studentCoursesCopy.addAll(studentCourses);
+		return studentCoursesCopy;
+	}
+	
+	
+	/*
+	 * Method to find a Course by courseID
+	 */
+
+	public Course findCourseByID(String courseID) {
+		Course cour = null;
+		for(int i = 0; i < studentCourses.size(); i++) {
+			if(getCourses().get(i).getCourseID().equalsIgnoreCase(courseID)) {
+				cour = getCourses().get(i);
+			}
+		}return cour;
 	}
 
-	//Fjerner course fra ArrayListen, brukes for å kunne unngå duplikat av courses
+	
+	/*
+	 * Removes course from studentCourses
+	 */
+	
 	public void removeCourse(String courseID) {
 		Iterator<Course> iterator = studentCourses.iterator();
 		while(iterator.hasNext()) {
 			Course nCourse = iterator.next();
-			if(nCourse.getCourseID().equals(courseID)) {
+			if(nCourse.getCourseID().equalsIgnoreCase(courseID)) {
 				iterator.remove();
 				studentCourses.remove(nCourse);
 			}
 		}
 	}
+	
 	
 	/*
 	 * Gives grade a value
@@ -90,10 +107,13 @@ public class Student {
 			return 1;
 		}
 	}
+	
 		
 	/*
 	 * Calculates the average of grades
+	 * Throw new IllegalStateException if not logged in or no registered courses
 	 */
+	
 	public String averageGrade (String studentID) {	
 		
 		double sum = 0;
@@ -102,9 +122,9 @@ public class Student {
 		double average = 0;
 		
 		if (studentID == null) {
-			throw new IllegalStateException("Logg inn først");
+			throw new IllegalStateException("Vennligst logg inn først");
 		} else if(studentCourses.size() == 0) {
-			throw new NullPointerException("Du har ingen kurs");	
+			throw new IllegalStateException("Du har ingen registrerte emner");
 		}
 		else {
 				for (int i = 0; i < studentCourses.size(); i++) {
@@ -131,8 +151,10 @@ public class Student {
 		return avg;
 	}}
 	
+	
 	/*
 	 * Calculates the median of grades
+	 * Throw new IllegalStateException if not logged in or no registered courses
 	 */
 	 
 	public String medianGrade (String studentID) {	
@@ -140,9 +162,9 @@ public class Student {
 		double middle = 0;
 		String stringMedian = ""; 
 			if (studentID == null) {
-				throw new IllegalStateException("Logg inn først");
+				throw new IllegalStateException("Vennligst logg inn først");
 			} else if(studentCourses.size() == 0) {
-				throw new NullPointerException("Du har ingen kurs");
+				throw new IllegalStateException("Du har ingen registrerte emner");
 			}
 			else{
 				for (int i = 0; i < studentCourses.size(); i++) {
@@ -159,26 +181,16 @@ public class Student {
 					}
 				}
 				Collections.sort(medianCourse);	
-				if (medianCourse.size() == 1) {
+				if (medianCourse.size() == 1) { //if only one course registered
 					middle = medianCourse.get(0);
-				}else if(medianCourse.size()%2 == 1) {//oddetall
+				}else if(medianCourse.size()%2 == 1) { //if odd numbers
 					middle = (medianCourse.get((medianCourse.size()-1) /2));
-				} else{ //partall;
+				} else{ //if even number
 					middle = (((double)medianCourse.get(medianCourse.size()/2)) + ((double)medianCourse.get(medianCourse.size()/2-1))) /2;
 				}				
 				stringMedian = String.valueOf(middle);		
 				return stringMedian;
 			}
-	}
-	
-
-	public Course findCourseByID(String courseID) {
-		Course cour = null;
-		for(int i = 0; i < studentCourses.size(); i++) {
-			if(getCourses().get(i).getCourseID().equals(courseID)) {
-				cour = getCourses().get(i);
-			}
-		}return cour;
 	}
 
 	public String getFirstName() {
@@ -194,10 +206,41 @@ public class Student {
 	}
 	
 	
+	/*
+	 * returns true if name is letters and white space, but not only white space
+	 */
+	
+	private boolean isValidFirstName(String firstName) {
+		return (firstName.matches("^[a-zA-ZæøåÆØÅ\s]*$") && !firstName.isBlank());
+	}
+	
+	
+	private boolean isValidLastName(String lastName) {
+		return (lastName.matches("^[a-zA-ZæøåÆØÅ\s]*$") && !lastName.isBlank());
+	}
+	
+	
+	/*
+	 * Returns true if studentID is a four digit number
+	 */
+	
+	private boolean isValidStudentID(String studentID) {
+		if ((!studentID.matches("^[0-9]*$") || studentID.length() != 4)) {
+			return false; 
+			}
+		return true;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return firstName + "," + lastName + "," + STUDENT_ID;
 	}
+	
+	
+	/*
+	 * Returns every courses in a string
+	 */
 	
 	public String coursesString() {
 		String string = "";
@@ -208,31 +251,13 @@ public class Student {
 		return string;
 	}
 	
-	public String toFullString() {
 	
-		
+	/*
+	 * Returns full name, studentID and courses from that students courselist
+	 * Formatted for FileManager
+	 */
+	
+	public String toFullString() {
 		return firstName + "," + lastName + "," + STUDENT_ID +",;"+coursesString();
 	}
-	
-	private boolean isValidCourseID (String courseID){
-		if ((!courseID.matches("^[a-zA-Z][0-9a-zA-Z]*$") || courseID.isBlank() )){
-			return false;
-		}
-		return true;
-	}
-	
-	private boolean isValidYear(int year) {
-		if (year < 1900 || year > 2100) {
-			return false;
-		}
-		return true;
-	}
-	
-	private boolean isValidSemester(String semester) {
-		if (semester.equalsIgnoreCase("Høst") || semester.equalsIgnoreCase("Vår")) {
-			return true;
-		} else {
-		return false;
-	}
-	}
-	}
+}
