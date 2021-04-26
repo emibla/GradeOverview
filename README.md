@@ -11,4 +11,4 @@ Applikasjonen er en karakterbok med støtte for flere studenter, hvor hver stude
 Applikasjonen lagrer dataene lokalt i en fil, som blir hentet inn ved oppstart av applikasjonen og lagres automatisk ved endringer.
 
 
-
+![Skjermbilde](Skjermbilde 2021-04-26 kl. 15.29.06.png)
