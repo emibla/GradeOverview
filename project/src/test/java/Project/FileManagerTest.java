@@ -1,9 +1,9 @@
 package Project;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ public class FileManagerTest {
 	}
 	
 	@Test
-	public void testReadStudentFromFile() throws FileNotFoundException{
+	public void testReadStudentFromFile() throws IOException {
 		StudentRegister testRegister = new StudentRegister();
 		fileManager.readStudentsFromFile(testRegister, "testFileWithStudents");
 		assertEquals("Ronald", testRegister.findStudentByID("1100").getFirstName());
